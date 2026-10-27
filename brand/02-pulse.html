@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>upcroc — Brand Style 2 · Pulse</title>
+<style>
+  :root{--ink:#0A0A10;--ink2:#1A1A24;--pale:#EDEDF2}
+  *{box-sizing:border-box}
+  body{margin:0;background:#F6F5F1;color:#16181A;
+       font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+  .wrap{max-width:1120px;margin:0 auto;padding:56px 28px 96px}
+  h1{font-size:34px;letter-spacing:-.02em;margin:0 0 6px}
+  h2{font-size:20px;letter-spacing:-.01em;margin:40px 0 12px;padding-top:20px;border-top:1px solid #00000014}
+  .sub{color:#5C6470;margin:0 0 8px}
+  .lede{font-size:18px;color:#39424C;max-width:66ch;margin:0 0 8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;margin-top:20px}
+  .card{background:#fff;border:1px solid #00000012;border-radius:16px;padding:18px;
+        box-shadow:0 1px 2px #00000008}
+  .card.dark{background:var(--ink)}
+  .card h3{margin:0 0 2px;font-size:15px}
+  .card p{margin:0 0 12px;font-size:13px;color:#6B7280}
+  .card.dark p{color:#9FA0B0}
+  .card.dark h3{color:#EDEDF2}
+  .swatch{width:100%;height:64px;border-radius:10px}
+  .hex{font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#6B7280;margin-top:6px}
+  pre{background:#0E1116;color:#D6DEE8;padding:14px;border-radius:12px;overflow:auto;
+      font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre b{color:#7EE0C0;font-weight:600}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  td{padding:9px 10px;border-bottom:1px solid #00000010;vertical-align:top}
+  td:first-child{font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+  .tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+       background:#0E1116;color:#fff;padding:3px 9px;border-radius:999px}
+  .note{background:#F4F2FF;border-left:3px solid #7C5CFF;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<span class="tag">Brand style 02 of 04</span>
+<h1>Pulse</h1>
+<p class="lede">The other half of the animal. The crocodile is not patient and sudden — it is
+<span style="color:#7C5CFF;font-weight:600">fast</span>, and the fast part only lasts a
+second. This style is the strike, not the wait.</p>
+<p class="sub">It is also the honest description of the software. Most of the runtime is a
+timer. What the user actually experiences is the <b>spike</b> when a match lands. The mark
+is built out of that one spike.</p>
+
+<h2>Philosophy</h2>
+<p class="lede">A monitoring tool that animates constantly trains you to ignore it. This
+style admits that: nothing in the identity moves, but everything is <i>shaped</i> as if it
+were about to. Stillness that has tension in it. Restraint, but with the throttle pinned
+open.</p>
+
+<div class="note"><b>The four devices.</b> <b>1.</b> Letterform fused with symbol — the
+mark is a <b>u</b>, the first letter of the name, whose right stem is cut off at an angle
+so it reads as a spike. <b>2.</b> Gradient on one element only — a violet→cyan run along
+the stroke, the strongest current device in identity work right now. <b>3.</b> The slant
+adds direction; a pure u has none. <b>4.</b> The stroke is deliberately unfinished at the
+bottom right, so the eye expects the next beat.</div>
+
+<h2>Story</h2>
+<table>
+<tr><td>The bowl</td><td>A u with a true semicircular bottom, so it is unambiguously the letterform and not a generic arch.</td></tr>
+<tr><td>The spike</td><td>The right stem leaves the bowl on a diagonal instead of vertically. It is the only asymmetry in the mark and it carries all the meaning.</td></tr>
+<tr><td>The gradient</td><td>Violet at the top into cyan at the bottom — cold light on metal, the house style of premium software marks.</td></tr>
+<tr><td>The ground</td><td>Near-black, not navy. Neutral so the gradient has nothing to fight.</td></tr>
+</table>
+
+<h2>Palette</h2>
+<div class="grid">
+  <div class="card"><div class="swatch" style="background:#0A0A10"></div><div class="hex">#0A0A10 — Void · ground</div></div>
+  <div class="card"><div class="swatch" style="background:#1A1A24"></div><div class="hex">#1A1A24 — Surface</div></div>
+  <div class="card"><div class="swatch" style="background:linear-gradient(150deg,#9B7BFF,#7C5CFF 45%,#2FD9F4)"></div><div class="hex">#9B7BFF → #2FD9F4 — the stroke</div></div>
+  <div class="card"><div class="swatch" style="background:#EDEDF2"></div><div class="hex">#EDEDF2 — Flat, for type</div></div>
+</div>
+
+<h2>The four marks</h2>
+<div class="grid">
+
+  <div class="card dark">
+    <h3>B1 · App icon</h3><p>Home screen, 512 master</p>
+    <svg viewBox="0 0 512 512" width="200" height="200">
+      <defs>
+        <linearGradient id="b1g" x1=".2" y1="0" x2=".7" y2="1">
+          <stop offset="0" stop-color="#9B7BFF"/><stop offset=".45" stop-color="#7C5CFF"/>
+          <stop offset="1" stop-color="#2FD9F4"/>
+        </linearGradient>
+      </defs>
+      <rect width="512" height="512" rx="116" fill="#0A0A10"/>
+      <path d="M150 168 V288 A108 108 0 0 0 330 318 L392 176"
+            fill="none" stroke="url(#b1g)" stroke-width="58" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="card dark">
+    <h3>B2 · Glyph only</h3><p>Transparent, any surface</p>
+    <svg viewBox="0 0 512 512" width="200" height="200">
+      <defs>
+        <linearGradient id="b2g" x1=".2" y1="0" x2=".7" y2="1">
+          <stop offset="0" stop-color="#9B7BFF"/><stop offset=".45" stop-color="#7C5CFF"/>
+          <stop offset="1" stop-color="#2FD9F4"/>
+        </linearGradient>
+      </defs>
+      <path d="M150 168 V288 A108 108 0 0 0 330 318 L392 176"
+            fill="none" stroke="url(#b2g)" stroke-width="58" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="card">
+    <h3>B3 · Wordmark</h3><p>Gradient lands on <i>up</i> — inverted from style 1</p>
+    <svg viewBox="0 0 900 220" width="320" height="78">
+      <defs>
+        <linearGradient id="b3g" x1="0" y1="0" x2="1" y2=".6">
+          <stop offset="0" stop-color="#9B7BFF"/><stop offset="1" stop-color="#2FD9F4"/>
+        </linearGradient>
+      </defs>
+      <text x="8" y="146" font-family="Inter,-apple-system,Segoe UI,sans-serif"
+            font-size="124" font-weight="600" letter-spacing="-5" fill="url(#b3g)">up</text>
+      <text x="168" y="146" font-family="Inter,-apple-system,Segoe UI,sans-serif"
+            font-size="124" font-weight="600" letter-spacing="-5" fill="#14141C">croc</text>
+    </svg>
+  </div>
+
+  <div class="card dark">
+    <h3>B4 · Monogram</h3><p>24–48px. Flat cyan, gradient dropped</p>
+    <svg viewBox="0 0 512 512" width="200" height="200">
+      <rect width="512" height="512" rx="150" fill="#0A0A10"/>
+      <path d="M158 178 V282 A96 96 0 0 0 316 306 L376 180"
+            fill="none" stroke="#7FE9F8" stroke-width="68" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+</div>
+
+<h2>Source</h2>
+<pre><b>&lt;!-- B1 App icon --&gt;</b>
+&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;defs&gt;
+    &lt;linearGradient id="g" x1=".2" y1="0" x2=".7" y2="1"&gt;
+      &lt;stop offset="0" stop-color="#9B7BFF"/&gt;
+      &lt;stop offset=".45" stop-color="#7C5CFF"/&gt;
+      &lt;stop offset="1" stop-color="#2FD9F4"/&gt;
+    &lt;/linearGradient&gt;
+  &lt;/defs&gt;
+  &lt;rect width="512" height="512" rx="116" fill="#0A0A10"/&gt;
+  &lt;path d="M150 168 V288 A108 108 0 0 0 330 318 L392 176"
+        fill="none" stroke="url(#g)" stroke-width="58" stroke-linecap="round"/&gt;
+&lt;/svg&gt;
+
+<b>&lt;!-- B4 Monogram, 24px-safe --&gt;</b>
+&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;rect width="512" height="512" rx="150" fill="#0A0A10"/&gt;
+  &lt;path d="M158 178 V282 A96 96 0 0 0 316 306 L376 180"
+        fill="none" stroke="#7FE9F8" stroke-width="68" stroke-linecap="round"/&gt;
+&lt;/svg&gt;</pre>
+
+<h2>Usage rules</h2>
+<table>
+<tr><td>Minimum size</td><td>B1/B2 at 48px; below that B4, which goes flat cyan.</td></tr>
+<tr><td>The spike</td><td>The diagonal right stem is not a mistake. Straighten it and the mark dies.</td></tr>
+<tr><td>Gradient</td><td>On the stroke only. Never on the icon ground, never on both word halves.</td></tr>
+<tr><td>Motion</td><td>One beat on landing, then nothing. No loop, no idle animation.</td></tr>
+</table>
+
+</div>
+</body>
+</html>
