@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,10 +41,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import app.upcroc.ui.theme.LocalAppFontScale
+import app.upcroc.ui.theme.LocalBaseFontScale
 import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 
@@ -68,6 +73,7 @@ fun ModalSheet(
     ) {
         var shown by remember { mutableStateOf(false) }
         LaunchedEffect(Unit) { shown = true }
+        DialogTextScale {
         Box(Modifier.fillMaxSize()) {
             val interaction = remember { MutableInteractionSource() }
             Box(
@@ -113,6 +119,7 @@ fun ModalSheet(
                 }
             }
         }
+        }
     }
 }
 
@@ -129,6 +136,7 @@ fun AppDialog(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         val maxHeight = (LocalConfiguration.current.screenHeightDp * 0.82f).dp
+        DialogTextScale {
         Box(
             Modifier
                 .fillMaxSize()
@@ -156,7 +164,18 @@ fun AppDialog(
                 )
             }
         }
+        }
     }
+}
+
+@Composable
+private fun DialogTextScale(content: @Composable () -> Unit) {
+    val density = LocalDensity.current
+    val scale = LocalBaseFontScale.current * LocalAppFontScale.current
+    CompositionLocalProvider(
+        LocalDensity provides Density(density = density.density, fontScale = scale),
+        content = content,
+    )
 }
 
 @Composable

@@ -182,7 +182,7 @@ fun SplashScreen(
 
         AppText(
             text = "Upwork job alerts",
-            style = UpType.caption.copy(fontSize = 10.5.sp, letterSpacing = 0.2.sp),
+            style = UpType.caption.copy(fontSize = 11.5.sp, letterSpacing = 0.2.sp),
             color = Upcroc.Muted,
             modifier = Modifier
                 .align(Alignment.TopCenter)
@@ -213,7 +213,7 @@ fun SplashScreen(
 
         AppText(
             text = "Tap to continue",
-            style = UpType.tiny.copy(fontSize = 9.sp, letterSpacing = 0.2.sp),
+            style = UpType.tiny.copy(fontSize = 10.5.sp, letterSpacing = 0.2.sp),
             color = Upcroc.Faint,
             modifier = Modifier
                 .align(Alignment.BottomCenter)

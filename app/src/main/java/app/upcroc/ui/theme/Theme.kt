@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -17,6 +18,9 @@ import app.upcroc.R
  * The whole palette is taken from prototype/shared.css. True black, solid
  * elevated surfaces, one blue. No gradients are part of the visual language.
  */
+val LocalAppFontScale = staticCompositionLocalOf { 1f }
+val LocalBaseFontScale = staticCompositionLocalOf { 1f }
+
 object Upcroc {
     val Blue = Color(0xFF4F8DFD)
     val BlueSoft = Color(0xFF10203D)
@@ -93,9 +97,9 @@ private fun style(
 ): TextStyle = TextStyle(
     fontFamily = Manrope,
     fontWeight = weight,
-    fontSize = (size + 2f).sp,
+    fontSize = (size + 3f).sp,
     letterSpacing = tracking.sp,
-    lineHeight = ((lineHeight ?: (size * 1.35f)) + 2f).sp,
+    lineHeight = ((lineHeight ?: (size * 1.35f)) + 3f).sp,
 )
 
 /**

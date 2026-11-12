@@ -254,7 +254,7 @@ fun OnboardingScreen(
                     "Skip",
                     onClick = { finish() },
                     color = Upcroc.Muted,
-                    style = UpType.caption.copy(fontSize = 10.sp),
+                    style = UpType.caption.copy(fontSize = 11.sp),
                 )
             }
 
@@ -402,7 +402,7 @@ private fun StepKicker(text: String) {
         style = UpType.caption.copy(
             fontWeight = FontWeight.W700,
             letterSpacing = 1.3.sp,
-            fontSize = 10.sp,
+            fontSize = 11.sp,
         ),
         color = Upcroc.Dim,
     )
@@ -601,9 +601,9 @@ private fun NotificationsStep(
                     AppText("Senior AI Automation Engineer", style = UpType.caption.copy(fontWeight = FontWeight.W800), maxLines = 1)
                     AppText("\$40–70/hr · Australia · Expert", style = UpType.small, color = Upcroc.Muted, maxLines = 1)
                     Spacer(Modifier.height(3.dp))
-                    AppText("Matched “AI automation” · 6s after posting", style = UpType.tiny.copy(fontSize = 8.5.sp), color = Upcroc.Dim)
+                    AppText("Matched “AI automation” · 6s after posting", style = UpType.tiny.copy(fontSize = 10.sp), color = Upcroc.Dim)
                 }
-                AppText("now", style = UpType.tiny.copy(fontSize = 8.5.sp), color = Upcroc.Dim)
+                AppText("now", style = UpType.tiny.copy(fontSize = 10.sp), color = Upcroc.Dim)
             }
         }
         Column(
@@ -697,7 +697,7 @@ private fun FirstSearchStep(
             }
             AppText(
                 "Tap a keyword to edit it. The first search stays smart and needs no keywords.",
-                style = UpType.tiny.copy(fontSize = 9.sp),
+                style = UpType.tiny.copy(fontSize = 10.5.sp),
                 color = Upcroc.Dim,
                 modifier = Modifier.padding(top = 8.dp),
             )
@@ -734,7 +734,7 @@ private fun SummaryTile(value: String, label: String, modifier: Modifier = Modif
             .padding(horizontal = 9.dp, vertical = 10.dp),
     ) {
         AppText(value, style = UpType.groupTitle.copy(fontWeight = FontWeight.W800), color = Upcroc.Text)
-        AppText(label.uppercase(), style = UpType.tiny.copy(fontSize = 8.5.sp, letterSpacing = 0.4.sp), color = Upcroc.Dim)
+        AppText(label.uppercase(), style = UpType.tiny.copy(fontSize = 10.sp, letterSpacing = 0.4.sp), color = Upcroc.Dim)
     }
 }
 
@@ -753,7 +753,7 @@ private fun MiniSwitchRow(
         Column(Modifier.weight(1f)) {
             AppText(title, style = UpType.caption.copy(fontWeight = FontWeight.W700), color = Upcroc.Text)
             Spacer(Modifier.height(2.dp))
-            AppText(subtitle, style = UpType.tiny.copy(fontSize = 9.5.sp), color = Upcroc.Muted)
+            AppText(subtitle, style = UpType.tiny.copy(fontSize = 11.sp), color = Upcroc.Muted)
         }
         app.upcroc.ui.components.UpSwitch(checked = checked, onCheckedChange = onCheckedChange)
     }
@@ -772,7 +772,7 @@ private fun MiniLinkRow(title: String, subtitle: String, onClick: () -> Unit) {
         Column(Modifier.weight(1f)) {
             AppText(title, style = UpType.caption.copy(fontWeight = FontWeight.W700), color = Upcroc.Text)
             Spacer(Modifier.height(2.dp))
-            AppText(subtitle, style = UpType.tiny.copy(fontSize = 9.5.sp), color = Upcroc.Muted)
+            AppText(subtitle, style = UpType.tiny.copy(fontSize = 11.sp), color = Upcroc.Muted)
         }
         IconGlyph(UiIcon.Chevron, Modifier.size(15.dp), Upcroc.Dim)
     }

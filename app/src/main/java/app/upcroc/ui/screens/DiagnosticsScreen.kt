@@ -413,7 +413,7 @@ private fun EventRow(event: DiagEvent) {
         ) {
             AppText(
                 Fmt.clock(event.at),
-                style = UpType.tiny.copy(fontWeight = FontWeight.W600).copy(fontSize = 9.sp),
+                style = UpType.tiny.copy(fontWeight = FontWeight.W600).copy(fontSize = 10.5.sp),
                 color = Upcroc.Dim,
                 modifier = Modifier.width(48.dp),
                 maxLines = 1,
@@ -431,7 +431,7 @@ private fun EventRow(event: DiagEvent) {
                 )
                 AppText(
                     event.sub,
-                    style = UpType.tiny.copy(fontSize = 9.5.sp),
+                    style = UpType.tiny.copy(fontSize = 11.sp),
                     color = Upcroc.Muted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -439,7 +439,7 @@ private fun EventRow(event: DiagEvent) {
             }
             AppText(
                 event.dur,
-                style = UpType.tiny.copy(fontSize = 9.sp, fontWeight = FontWeight.W600),
+                style = UpType.tiny.copy(fontSize = 10.5.sp, fontWeight = FontWeight.W600),
                 color = Upcroc.Dim,
                 maxLines = 1,
             )
@@ -465,13 +465,13 @@ private fun EventRow(event: DiagEvent) {
                             ) {
                                 AppText(
                                     label,
-                                    style = UpType.tiny.copy(fontSize = 9.sp),
+                                    style = UpType.tiny.copy(fontSize = 10.5.sp),
                                     color = Upcroc.Dim,
                                     maxLines = 1,
                                 )
                                 AppText(
                                     value,
-                                    style = UpType.tiny.copy(fontSize = 9.sp, fontWeight = FontWeight.W600),
+                                    style = UpType.tiny.copy(fontSize = 10.5.sp, fontWeight = FontWeight.W600),
                                     color = Upcroc.Muted,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,

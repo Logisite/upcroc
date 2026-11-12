@@ -204,7 +204,7 @@ fun FeedScreen(
                         Spacer(Modifier.height(3.dp))
                         AppText(
                             heroHint,
-                            style = UpType.tiny.copy(fontSize = 9.5.sp),
+                            style = UpType.tiny.copy(fontSize = 11.sp),
                             color = Upcroc.Muted,
                             maxLines = 2,
                         )
@@ -229,7 +229,7 @@ fun FeedScreen(
                         Spacer(Modifier.height(4.dp))
                         AppText(
                             "Check now",
-                            style = UpType.tiny.copy(fontSize = 8.5.sp, fontWeight = FontWeight.W600),
+                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
                             color = Upcroc.Muted,
                         )
                     }
@@ -244,7 +244,7 @@ fun FeedScreen(
                     ) {
                         AppText(
                             "Quota $used / $limit",
-                            style = UpType.tiny.copy(fontSize = 8.5.sp, fontWeight = FontWeight.W600),
+                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
                             color = Upcroc.Muted,
                         )
                     }
@@ -271,7 +271,7 @@ fun FeedScreen(
                         )
                         AppText(
                             if (status.running) "Live" else "Off",
-                            style = UpType.tiny.copy(fontSize = 8.5.sp, fontWeight = FontWeight.W600),
+                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
                             color = Upcroc.Muted,
                         )
                     }
@@ -479,7 +479,7 @@ private fun SearchCard(
         Column(Modifier.padding(start = 14.dp, end = 14.dp, top = 13.dp)) {
             AppText(
                 label.uppercase(),
-                style = UpType.tiny.copy(fontWeight = FontWeight.W600, letterSpacing = 0.7.sp, fontSize = 9.sp),
+                style = UpType.tiny.copy(fontWeight = FontWeight.W600, letterSpacing = 0.7.sp, fontSize = 10.5.sp),
                 color = Color.White.copy(alpha = 0.7f),
             )
             Spacer(Modifier.height(5.dp))
@@ -493,7 +493,7 @@ private fun SearchCard(
             Spacer(Modifier.height(4.dp))
             AppText(
                 meta,
-                style = UpType.tiny.copy(fontSize = 9.5.sp),
+                style = UpType.tiny.copy(fontSize = 11.sp),
                 color = Color.White.copy(alpha = 0.7f),
                 maxLines = 1,
             )
@@ -586,7 +586,7 @@ private fun JobRow(
                     job.budget.ifBlank { "Budget not listed" },
                     job.country.ifBlank { "Anywhere" },
                 ).joinToString(" · "),
-                style = UpType.tiny.copy(fontSize = 9.5.sp),
+                style = UpType.tiny.copy(fontSize = 11.sp),
                 color = Upcroc.Dim,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -595,17 +595,25 @@ private fun JobRow(
         Column(horizontalAlignment = Alignment.End) {
             AppText(
                 Fmt.ageShort(job.publishedAt, now),
-                style = UpType.caption.copy(fontWeight = FontWeight.W800, fontSize = 10.5.sp),
+                style = UpType.caption.copy(fontWeight = FontWeight.W800, fontSize = 11.5.sp),
                 color = Upcroc.Text,
                 maxLines = 1,
             )
             Spacer(Modifier.height(1.dp))
             AppText(
                 job.experienceLevel.ifBlank { job.jobType.ifBlank { "New" } },
-                style = UpType.tiny.copy(fontSize = 7.5.sp),
+                style = UpType.tiny.copy(fontSize = 9.5.sp),
                 color = Upcroc.Dim,
                 maxLines = 1,
             )
+            job.invitesSent?.takeIf { it > 0 }?.let { invites ->
+                AppText(
+                    "$invites invite${if (invites == 1) "" else "s"}",
+                    style = UpType.tiny.copy(fontSize = 9.5.sp, fontWeight = FontWeight.W700),
+                    color = Upcroc.Blue,
+                    maxLines = 1,
+                )
+            }
         }
         Box(
             Modifier

@@ -48,6 +48,8 @@ import app.upcroc.ui.screens.SearchScreen
 import app.upcroc.ui.screens.SettingsScreen
 import app.upcroc.ui.screens.SplashHold
 import app.upcroc.ui.screens.SplashScreen
+import app.upcroc.ui.theme.LocalAppFontScale
+import app.upcroc.ui.theme.LocalBaseFontScale
 import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 import app.upcroc.update.UpdateInfo
@@ -76,9 +78,13 @@ fun UpcrocRoot(container: AppContainer) {
     val uiState by vm.uiState.collectAsStateWithLifecycle()
     var splashDone by rememberSaveable { mutableStateOf(false) }
     val density = LocalDensity.current
-    val fontScale = (density.fontScale * uiState.fontScale).coerceIn(0.85f, 1.6f)
+    val baseFontScale = density.fontScale
+    val appFontScale = uiState.fontScale
+    val fontScale = (baseFontScale * appFontScale).coerceIn(0.85f, 1.6f)
 
     CompositionLocalProvider(
+        LocalAppFontScale provides appFontScale,
+        LocalBaseFontScale provides baseFontScale,
         LocalDensity provides Density(density = density.density, fontScale = fontScale),
     ) {
         when {

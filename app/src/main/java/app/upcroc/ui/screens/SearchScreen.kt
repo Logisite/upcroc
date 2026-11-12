@@ -286,7 +286,7 @@ fun SearchScreen(
                 UpCard {
                     AppText("Requests today", style = UpType.section, color = Upcroc.Text)
                     Spacer(Modifier.height(2.dp))
-                    AppText("Soft limit · resets at midnight", style = UpType.tiny.copy(fontSize = 8.5.sp), color = Upcroc.Dim)
+                    AppText("Soft limit · resets at midnight", style = UpType.tiny.copy(fontSize = 10.sp), color = Upcroc.Dim)
                     Box(
                         Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 2.dp),
                         contentAlignment = Alignment.Center,
@@ -307,7 +307,7 @@ fun SearchScreen(
                                 )
                                 AppText(
                                     "REQUESTS TODAY",
-                                    style = UpType.tiny.copy(fontSize = 8.sp, letterSpacing = 0.6.sp),
+                                    style = UpType.tiny.copy(fontSize = 10.sp, letterSpacing = 0.6.sp),
                                     color = Upcroc.Dim,
                                 )
                             }
@@ -574,7 +574,7 @@ private fun GroupCard(
         ) {
             AppText(
                 "$number",
-                style = UpType.caption.copy(fontWeight = FontWeight.W800, fontSize = 10.sp),
+                style = UpType.caption.copy(fontWeight = FontWeight.W800, fontSize = 11.sp),
                 color = if (group.enabled) Upcroc.Blue else Upcroc.Dim,
             )
         }
@@ -593,15 +593,15 @@ private fun GroupCard(
                     } else {
                         "paused"
                     },
-                style = UpType.tiny.copy(fontSize = 9.sp),
+                style = UpType.tiny.copy(fontSize = 10.5.sp),
                 color = Upcroc.Dim,
             )
             Spacer(Modifier.height(2.dp))
             Row {
-                AppText("Keywords ", style = UpType.tiny.copy(fontSize = 9.sp), color = Upcroc.Dim)
+                AppText("Keywords ", style = UpType.tiny.copy(fontSize = 10.5.sp), color = Upcroc.Dim)
                 AppText(
                     group.keywords.ifBlank { "Optional" },
-                    style = UpType.tiny.copy(fontSize = 9.sp),
+                    style = UpType.tiny.copy(fontSize = 10.5.sp),
                     color = if (group.keywords.isBlank()) Upcroc.Dim else Upcroc.Muted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -631,7 +631,7 @@ private fun FilterBox(
         Column(Modifier.weight(1f)) {
             AppText(
                 label,
-                style = UpType.tiny.copy(fontSize = 9.5.sp, fontWeight = FontWeight.W600),
+                style = UpType.tiny.copy(fontSize = 11.sp, fontWeight = FontWeight.W600),
                 color = Upcroc.Muted,
             )
             AppText(
@@ -691,11 +691,11 @@ private fun QuotaDonut(
 private fun LegendRow(color: Color, label: String, value: Int) {
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
         Box(Modifier.size(6.dp).clip(CircleShape).background(color))
-        AppText(label, style = UpType.tiny.copy(fontSize = 9.sp), color = Upcroc.Muted)
+        AppText(label, style = UpType.tiny.copy(fontSize = 10.5.sp), color = Upcroc.Muted)
         Spacer(Modifier.weight(1f))
         AppText(
             "$value",
-            style = UpType.tiny.copy(fontSize = 9.sp, fontWeight = FontWeight.W700),
+            style = UpType.tiny.copy(fontSize = 10.5.sp, fontWeight = FontWeight.W700),
             color = Upcroc.Text,
             textAlign = TextAlign.End,
         )
@@ -713,7 +713,7 @@ private fun StatBox(value: String, label: String, modifier: Modifier = Modifier)
         AppText(value, style = UpType.statBig.copy(fontSize = 15.sp), color = Upcroc.Text, maxLines = 1)
         AppText(
             label.uppercase(),
-            style = UpType.tiny.copy(fontSize = 7.5.sp, letterSpacing = 0.5.sp),
+            style = UpType.tiny.copy(fontSize = 9.5.sp, letterSpacing = 0.5.sp),
             color = Upcroc.Dim,
             maxLines = 1,
         )
@@ -757,7 +757,7 @@ private fun CheckRow(
                 } else {
                     status.lowercase().replace('_', ' ')
                 },
-                style = UpType.tiny.copy(fontSize = 8.sp),
+                style = UpType.tiny.copy(fontSize = 10.sp),
                 color = Upcroc.Dim,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -769,7 +769,7 @@ private fun CheckRow(
                 status.contains("RATE", ignoreCase = true) -> "LIMIT"
                 else -> "ERR"
             },
-            style = UpType.tiny.copy(fontSize = 8.5.sp, fontWeight = FontWeight.W700),
+            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W700),
             color = if (ok) Upcroc.Green else Upcroc.BannerDanger,
         )
     }

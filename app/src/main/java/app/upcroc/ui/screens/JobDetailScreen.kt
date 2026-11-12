@@ -324,6 +324,10 @@ private fun ClientCard(job: Job) {
         }
         job.hireRate?.let { add("$it% hire rate") }
         job.totalHired?.let { add("$it hired") }
+        job.invitesSent?.takeIf { it > 0 }?.let {
+            add("$it invite${if (it == 1) "" else "s"} sent")
+        }
+        job.invitedToInterview?.takeIf { it > 0 }?.let { add("$it interviewing") }
     }
     val initials = job.country.trim().take(2).uppercase().ifBlank { "UP" }
 
@@ -343,14 +347,14 @@ private fun ClientCard(job: Job) {
                 IconGlyph(UiIcon.Shield, Modifier.size(12.dp), Upcroc.Blue)
             }
             if (meta.isNotBlank()) {
-                AppText(meta, style = UpType.tiny.copy(fontSize = 9.5.sp), color = Upcroc.Muted, maxLines = 2)
+                AppText(meta, style = UpType.tiny.copy(fontSize = 11.sp), color = Upcroc.Muted, maxLines = 2)
             }
             if (facts.isNotEmpty()) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
                     IconGlyph(UiIcon.Star, Modifier.size(11.dp), Upcroc.Orange)
                     AppText(
                         facts.joinToString(" · "),
-                        style = UpType.tiny.copy(fontSize = 9.sp),
+                        style = UpType.tiny.copy(fontSize = 10.5.sp),
                         color = Upcroc.Dim,
                         maxLines = 2,
                     )
