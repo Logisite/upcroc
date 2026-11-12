@@ -14,5 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "upcroc"
+rootProject.name = "Upcroc"
 include(":app")
+include(":core")

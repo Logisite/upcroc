@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — reference vs build</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 24px; }
+  .head { display: flex; align-items: center; justify-content: space-between; max-width: 1480px; margin: 0 auto 16px; }
+  .title { font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
+  .sub { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .compare { display: flex; gap: 20px; align-items: flex-start; justify-content: center; max-width: 1480px; margin: 0 auto; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+  .label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 700; }
+  .ref { width: 685px; border-radius: 16px; display: block; }
+  .frame { width: 372px; height: 900px; overflow: hidden; border-radius: 36px; background: #000; }
+  iframe { width: 372px; height: 900px; border: 0; background: #000; }
+  .notes { max-width: 1480px; margin: 18px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .note { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 10px; color: var(--muted); line-height: 1.55; }
+  .note b { color: var(--text); }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div>
+      <div class="title">Reference vs build</div>
+      <div class="sub">Dribbble: Fintech Mobile App UI Design Dashboard (Ronas IT) · Upcroc: job-alert translation</div>
+    </div>
+    <a class="link" href="alerts.html">Open full screen →</a>
+  </div>
+  <div class="compare">
+    <div class="col">
+      <div class="label">Reference</div>
+      <img class="ref" src="reference-crop.png" alt="Fintech dashboard reference">
+    </div>
+    <div class="col">
+      <div class="label">Upcroc — Alerts</div>
+      <div class="frame"><iframe src="alerts.html"></iframe></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div class="note"><b>Kept:</b> true black canvas, white hierarchy, blue accent, circular avatars, big numeric card, horizontal card rail, transaction-style job rows, flat surfaces, icon-only bottom nav with a top indicator.</div>
+    <div class="note"><b>Translated:</b> balance → next-check countdown; cards → search groups; transfer avatars → quick actions; transactions → job alerts. No gradients or glow.</div>
+  </div>
+  <script>
+    document.querySelectorAll('iframe').forEach(function (frame) {
+      const embed = function () {
+        try { frame.contentDocument.body.classList.add('embed'); } catch (error) {}
+      };
+      frame.addEventListener('load', embed);
+      embed();
+    });
+  </script>
+</body>
+</html>

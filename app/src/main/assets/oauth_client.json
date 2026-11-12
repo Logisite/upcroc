@@ -1,0 +1,10 @@
+{
+  "client_id": "https://opencode.ai/oauth/opencode/client.json",
+  "client_name": "opencode",
+  "authorization_endpoint": "https://www.upwork.com/ab/account-security/oauth2/authorize",
+  "token_endpoint": "https://www.upwork.com/api/v3/oauth2/token",
+  "revocation_endpoint": "https://www.upwork.com/api/v3/oauth2/token/revoke",
+  "resource": "https://mcp.upwork.com/mcp",
+  "redirect_uri_template": "http://127.0.0.1:{port}/callback",
+  "scopes": []
+}

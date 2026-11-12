@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — Settings</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="settings.css">
+</head>
+<body>
+<div class="stage">
+  <div class="frame-wrap">
+    <div class="frame-label">Settings</div>
+    <div class="phone">
+      <div class="status" data-time="9:41"></div>
+      <div class="app">
+        <div class="topbar">
+          <div class="hello">
+            <div class="hello-copy"><div class="hello-sub">Account & device</div><div class="hello-name">Settings</div></div>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-btn" data-action="toast" data-msg="Edit profile opened" aria-label="Edit"><span class="i" data-icon="edit"></span></button>
+          </div>
+        </div>
+
+        <div class="account-card">
+          <div class="avatar" style="width:46px;height:46px;font-size:12px">AU</div>
+          <div class="account-copy">
+            <div class="profile-name">Upcroc</div>
+            <div class="profile-sub">Signed in to Upwork</div>
+          </div>
+          <div class="status-chip"><i></i>Live</div>
+        </div>
+
+        <div class="settings-group">
+          <div class="section-label">Watching</div>
+          <div class="settings-row">
+            <div class="settings-body"><div class="settings-title">Watching</div><div class="settings-sub">3 searches · every 2 min</div></div>
+            <div class="switch on"></div>
+          </div>
+          <div class="settings-row" data-action="toast" data-msg="Battery settings opened">
+            <div class="settings-body"><div class="settings-title">Battery</div><div class="settings-sub">Background reliability</div></div>
+            <div class="settings-value">Unrestricted</div><div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+          <div class="settings-row" data-action="toast" data-msg="Exact alarms settings opened">
+            <div class="settings-body"><div class="settings-title">Exact alarms</div><div class="settings-sub">Needed for precise checks</div></div>
+            <div class="settings-value">Allowed</div><div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="section-label">Alerts</div>
+          <div class="settings-row">
+            <div class="settings-body"><div class="settings-title">Push notifications</div><div class="settings-sub">Banners and sound</div></div>
+            <div class="switch on"></div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-body"><div class="settings-title">Quiet hours</div><div class="settings-sub">23:00 to 07:00</div></div>
+            <div class="switch on"></div>
+          </div>
+          <div class="settings-row" data-action="toast" data-msg="Sound picker opened">
+            <div class="settings-body"><div class="settings-title">Alert sound</div><div class="settings-sub">Notification sound</div></div>
+            <div class="settings-value">System default</div><div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="section-label">System</div>
+          <div class="settings-row" onclick="location.href='logs.html'">
+            <div class="settings-body"><div class="settings-title">Diagnostics</div><div class="settings-sub">Live status, logs, quota</div></div>
+            <div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+          <div class="settings-row" data-action="toast" data-msg="Layer 0 opened">
+            <div class="settings-body"><div class="settings-title">Layer 0</div><div class="settings-sub">Raw config and interval overrides</div></div>
+            <div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+          <div class="settings-row" data-action="toast" data-msg="Checking for updates">
+            <div class="settings-body"><div class="settings-title">Check for updates</div><div class="settings-sub">Signed APK updates</div></div>
+            <div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+          <div class="settings-row signout" data-action="toast" data-msg="Sign out tapped">
+            <div class="settings-body"><div class="settings-title">Sign out</div><div class="settings-sub">Keep local saves and history</div></div>
+            <div class="chev"><span class="i" data-icon="chevron"></span></div>
+          </div>
+        </div>
+
+        <div class="about">
+          <b>Upcroc 0.1.0</b>
+          <p>Read-only job alerts. Never applies to jobs or changes anything on Upwork.</p>
+          <div class="about-links">
+            <button class="link" data-action="toast" data-msg="Licences opened">Licences</button>
+            <button class="link" data-action="toast" data-msg="Source code opened">Source</button>
+            <button class="link" data-action="toast" data-msg="Privacy opened">Privacy</button>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item" href="alerts.html" aria-label="Alerts"><span class="i" data-icon="radar"></span></a>
+        <a class="nav-item" href="search.html" aria-label="Search"><span class="i" data-icon="search"></span></a>
+        <a class="nav-item active" href="settings.html" aria-label="Settings"><span class="i" data-icon="settings"></span></a>
+      </nav>
+      <div class="toast"></div>
+    </div>
+  </div>
+</div>
+<script src="icons.js"></script>
+<script src="brand.js"></script>
+<script src="shared.js"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — Diagnostics</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="logs.css">
+</head>
+<body>
+<div class="stage">
+  <div class="frame-wrap">
+    <div class="frame-label">Diagnostics</div>
+    <div class="phone">
+      <div class="status" data-time="9:41"></div>
+      <div class="app no-nav">
+        <div class="page-head">
+          <button class="icon-btn" onclick="location.href='settings.html'" aria-label="Back"><span class="i" data-icon="back"></span></button>
+          <div class="head-copy">
+            <div class="head-kicker">System</div>
+            <h1>Diagnostics</h1>
+          </div>
+          <div class="head-action">
+            <button class="icon-btn" data-action="toast" data-msg="Log copied to clipboard" aria-label="Copy log"><span class="i" data-icon="copy"></span></button>
+            <button class="icon-btn" data-action="toast" data-msg="Share sheet opened" aria-label="Share log"><span class="i" data-icon="share"></span></button>
+          </div>
+        </div>
+
+        <div class="card live-card" style="margin-top:2px">
+          <div class="live-top"><span class="pulse"></span>Watching · next check in 1m 18s</div>
+          <div class="live-meta">3 searches on · last check 12s ago</div>
+          <div class="quota-bar"><span style="width:1.1%"></span></div>
+          <div class="quota-row"><span><b>8</b> requests today</span><span><b>742</b> left of 750</span></div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat"><b>312</b><span>checks</span></div>
+          <div class="stat"><b>84</b><span>alerts</span></div>
+          <div class="stat"><b>0</b><span>errors</span></div>
+        </div>
+
+        <div class="banner" id="battery-banner">
+          <span class="i" data-icon="warn"></span>
+          <div class="banner-body"><b>Battery optimisation is on</b><span>Some checks may be delayed while the screen is off.</span></div>
+          <button class="link" data-action="toast" data-msg="Battery settings opened">Fix</button>
+        </div>
+
+        <div class="log-tools">
+          <div class="section-label">Event log</div>
+          <div class="log-actions">
+            <button class="icon-btn" data-action="toast" data-msg="Log file exported" aria-label="Export log"><span class="i" data-icon="download"></span></button>
+          </div>
+        </div>
+
+        <div class="seg" id="log-filters" style="margin-top:8px">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="check">Checks</button>
+          <button data-filter="alert">Alerts</button>
+          <button data-filter="error">Errors</button>
+        </div>
+
+        <div class="logs" id="logs">
+          <div class="log" data-kind="alert">
+            <div class="log-main">
+              <div class="log-time">9:42:11</div>
+              <div class="log-icon alert"><span class="i" data-icon="bell"></span></div>
+              <div class="log-copy"><div class="log-title">2 matches · notified</div><div class="log-sub">Primary matches · Senior AI Automation Engineer</div></div>
+              <div class="log-dur">12 ms</div>
+            </div>
+            <div class="log-detail">
+              <div><span>service</span><b>upwork.search</b></div><div><span>pages</span><b>2</b></div>
+              <div><span>new</span><b>2</b></div><div><span>quota</span><b>8 / 750</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="check">
+            <div class="log-main">
+              <div class="log-time">9:42:10</div>
+              <div class="log-icon check"><span class="i" data-icon="radar"></span></div>
+              <div class="log-copy"><div class="log-title">Primary matches checked</div><div class="log-sub">4 pages · 312 ms · 2 new</div></div>
+              <div class="log-dur">OK</div>
+            </div>
+            <div class="log-detail">
+              <div><span>service</span><b>upwork.search</b></div><div><span>mode</span><b>most_recent</b></div>
+              <div><span>days</span><b>1</b></div><div><span>quota</span><b>8 / 750</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="alert">
+            <div class="log-main">
+              <div class="log-time">9:40:02</div>
+              <div class="log-icon alert"><span class="i" data-icon="bell"></span></div>
+              <div class="log-copy"><div class="log-title">1 match · notified</div><div class="log-sub">AI automation · n8n / Make Automation Builder</div></div>
+              <div class="log-dur">9 ms</div>
+            </div>
+            <div class="log-detail">
+              <div><span>service</span><b>upwork.search</b></div><div><span>pages</span><b>1</b></div>
+              <div><span>new</span><b>1</b></div><div><span>quota</span><b>6 / 750</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="check">
+            <div class="log-main">
+              <div class="log-time">9:40:01</div>
+              <div class="log-icon check"><span class="i" data-icon="radar"></span></div>
+              <div class="log-copy"><div class="log-title">AI automation checked</div><div class="log-sub">1 page · 268 ms · 1 new</div></div>
+              <div class="log-dur">OK</div>
+            </div>
+            <div class="log-detail">
+              <div><span>service</span><b>upwork.search</b></div><div><span>mode</span><b>most_recent</b></div>
+              <div><span>days</span><b>1</b></div><div><span>quota</span><b>6 / 750</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="warn">
+            <div class="log-main">
+              <div class="log-time">9:36:00</div>
+              <div class="log-icon warn"><span class="i" data-icon="battery"></span></div>
+              <div class="log-copy"><div class="log-title">Battery optimisation detected</div><div class="log-sub">Delays are possible · allow unrestricted battery</div></div>
+              <div class="log-dur">warn</div>
+            </div>
+            <div class="log-detail">
+              <div><span>screen</span><b>off</b></div><div><span>doze</span><b>light</b></div>
+              <div><span>delay</span><b>42 s</b></div><div><span>action</span><b>needed</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="error">
+            <div class="log-main">
+              <div class="log-time">9:30:44</div>
+              <div class="log-icon error"><span class="i" data-icon="offline"></span></div>
+              <div class="log-copy"><div class="log-title">Token refresh failed · retried OK</div><div class="log-sub">Network dropped mid-request · recovered</div></div>
+              <div class="log-dur">1</div>
+            </div>
+            <div class="log-detail">
+              <div><span>error</span><b>EHOSTUNREACH</b></div><div><span>attempt</span><b>2 of 3</b></div>
+              <div><span>recovered</span><b>yes</b></div><div><span>lost</span><b>0</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="check">
+            <div class="log-main">
+              <div class="log-time">9:30:12</div>
+              <div class="log-icon check"><span class="i" data-icon="radar"></span></div>
+              <div class="log-copy"><div class="log-title">Primary matches checked</div><div class="log-sub">4 pages · 298 ms · 0 new</div></div>
+              <div class="log-dur">OK</div>
+            </div>
+            <div class="log-detail">
+              <div><span>service</span><b>upwork.search</b></div><div><span>mode</span><b>most_recent</b></div>
+              <div><span>days</span><b>1</b></div><div><span>quota</span><b>5 / 750</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="info">
+            <div class="log-main">
+              <div class="log-time">9:28:00</div>
+              <div class="log-icon info"><span class="i" data-icon="clock"></span></div>
+              <div class="log-copy"><div class="log-title">Quiet hours ended</div><div class="log-sub">Notifications resumed</div></div>
+              <div class="log-dur">—</div>
+            </div>
+            <div class="log-detail">
+              <div><span>window</span><b>23:00–07:00</b></div><div><span>held</span><b>3 alerts</b></div>
+            </div>
+          </div>
+          <div class="log" data-kind="check">
+            <div class="log-main">
+              <div class="log-time">9:24:00</div>
+              <div class="log-icon check"><span class="i" data-icon="radar"></span></div>
+              <div class="log-copy"><div class="log-title">n8n skipped</div><div class="log-sub">Search is paused · no request made</div></div>
+              <div class="log-dur">—</div>
+            </div>
+            <div class="log-detail">
+              <div><span>group</span><b>n8n</b></div><div><span>state</span><b>paused</b></div>
+              <div><span>quota</span><b>5 / 750</b></div><div><span>saved</span><b>1 request</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="log-empty" id="log-empty">No events in this filter.</div>
+
+        <div class="log-foot">
+          <p>Keeps 7 days of events.</p>
+          <button class="link" data-action="toast" data-msg="Log cleared">Clear log</button>
+        </div>
+      </div>
+      <div class="toast"></div>
+    </div>
+  </div>
+</div>
+<script src="icons.js"></script>
+<script src="brand.js"></script>
+<script src="shared.js"></script>
+<script src="logs.js"></script>
+</body>
+</html>

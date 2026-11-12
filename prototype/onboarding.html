@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="onboarding.css">
+</head>
+<body>
+<div class="stage">
+  <div class="frame-wrap">
+    <div class="frame-label">First run</div>
+    <div class="phone">
+      <div class="guide">
+        <div class="guide-top">
+          <button class="icon-btn" id="back" aria-label="Back" disabled><span class="i" data-icon="back"></span></button>
+          <div class="progress" id="progress"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          <button class="link" id="skip" style="font-size:10px">Skip</button>
+        </div>
+
+        <div class="guide-body">
+          <section class="step active" data-step="0">
+            <div class="guide-art art-mark">
+              <div class="art-logo" data-logo></div>
+            </div>
+            <div class="guide-kicker">Welcome</div>
+            <h2 class="guide-title">New Upwork jobs.</h2>
+            <p class="guide-copy">Upcroc checks your searches on a schedule and sends a notification when a job matches.</p>
+
+          </section>
+
+          <section class="step" data-step="1">
+            <div class="guide-kicker">How it works</div>
+            <h2 class="guide-title">What it does.</h2>
+            <p class="guide-copy">It checks, filters, and notifies.</p>
+            <div class="feature-list">
+              <div class="feature">
+                <div class="f-icon"><span class="i" data-icon="radar"></span></div>
+                <div><b>Checks Upwork</b><span>On the interval you choose.</span></div>
+              </div>
+              <div class="feature">
+                <div class="f-icon"><span class="i" data-icon="filter"></span></div>
+                <div><b>Uses your filters</b><span>Budget, proposals, client history, location.</span></div>
+              </div>
+              <div class="feature">
+                <div class="f-icon"><span class="i" data-icon="bell"></span></div>
+                <div><b>Sends a notification</b><span>Tap it to open the job on Upwork.</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="step" data-step="2">
+            <div class="guide-kicker">Account</div>
+            <h2 class="guide-title">Connect Upwork.</h2>
+            <p class="guide-copy">You sign in on Upwork's page.</p>
+            <div class="access-card">
+              <div class="access-head"><span class="i" data-icon="lock"></span>Access</div>
+              <div class="access-row yes"><span class="i" data-icon="checkmark"></span><span>Search jobs</span></div>
+              <div class="access-row yes"><span class="i" data-icon="checkmark"></span><span>Read your profile</span></div>
+              <div class="access-row no"><span class="i" data-icon="close"></span><span>Cannot apply or message</span></div>
+            </div>
+            
+          </section>
+
+          <section class="step" data-step="3">
+            <div class="guide-kicker">Alerts</div>
+            <h2 class="guide-title">Notifications.</h2>
+            <p class="guide-copy">One notification per matching job.</p>
+            <div class="notify-preview">
+              <div class="notify-head"><span class="i" data-icon="bell"></span>Upcroc · job alert</div>
+              <div class="notify-card">
+                <div class="avatar">SA</div>
+                <div class="notify-body">
+                  <div class="notify-title">Senior AI Automation Engineer</div>
+                  <div class="notify-sub">$40–70/hr · Australia · Expert</div>
+                  <div class="notify-meta">Matched “AI automation” · 6s after posting</div>
+                </div>
+                <div class="notify-time">now</div>
+              </div>
+            </div>
+            <div class="settings-mini">
+              <div class="settings-row"><div class="settings-body"><div class="settings-title">Notifications</div><div class="settings-sub">Banners and badge</div></div><div class="switch on"></div></div>
+              <div class="settings-row"><div class="settings-body"><div class="settings-title">Sound</div><div class="settings-sub">System default</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+              <div class="settings-row"><div class="settings-body"><div class="settings-title">Quiet hours</div><div class="settings-sub">23:00 to 07:00</div></div><div class="switch on"></div></div>
+            </div>
+          </section>
+
+          <section class="step" data-step="4">
+            <div class="guide-kicker">First search</div>
+            <h2 class="guide-title">Add a search.</h2>
+            <p class="guide-copy">Start with keywords. You can change filters later.</p>
+            <div class="keywords">
+              <div class="kw-label">Primary keywords</div>
+              <div class="kw-chips">
+                <span class="kw">AI automation</span>
+                <span class="kw">n8n</span>
+                <span class="kw add">+ Add keyword</span>
+              </div>
+              
+            </div>
+            <div class="settings-mini">
+              <div class="settings-row"><div class="settings-body"><div class="settings-title">Allow background checks</div><div class="settings-sub">Keeps checks running with the screen off</div></div><div class="switch on"></div></div>
+            </div>
+            <div class="summary">
+              <div><b>3</b><span>searches</span></div>
+              <div><b>2 min</b><span>interval</span></div>
+              <div><b>750</b><span>soft cap</span></div>
+            </div>
+          </section>
+        </div>
+
+        <div class="guide-foot">
+          <div class="guide-meta" id="meta">Step 1 of 5</div>
+          <button class="btn primary" id="next">Continue</button>
+        </div>
+      </div>
+      <div class="toast"></div>
+    </div>
+  </div>
+</div>
+<script src="icons.js"></script>
+<script src="brand.js"></script>
+<script src="shared.js"></script>
+<script src="onboarding.js"></script>
+</body>
+</html>

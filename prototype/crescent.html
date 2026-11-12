@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — crescent</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 40px 30px 60px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; }
+  .top h1 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.6px; }
+  .top p { margin: 5px 0 0; font-size: 10.5px; color: var(--muted); }
+  .hero { display: flex; gap: 30px; align-items: center; background: #0D0D0D; border-radius: 22px; padding: 22px; }
+  .big { width: 250px; height: 250px; border-radius: 56px; overflow: hidden; background: #000; flex: 0 0 auto; }
+  .big svg { width: 100%; height: 100%; display: block; }
+  .copy h2 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -.4px; }
+  .copy p { margin: 6px 0 0; font-size: 10.5px; line-height: 1.6; color: var(--muted); max-width: 430px; }
+  .sizes { display: flex; align-items: flex-end; gap: 14px; margin-top: 18px; }
+  .sizes .s { display: flex; flex-direction: column; gap: 5px; align-items: center; font-size: 7.5px; color: var(--dim); }
+  .sizes .b { overflow: hidden; background: #000; border-radius: 22%; }
+  .sizes svg { display: block; width: 100%; height: 100%; }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+  .cell { background: #0D0D0D; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .cell b { font-size: 10px; font-weight: 750; }
+  .cell span { font-size: 8.5px; color: var(--muted); text-align: center; }
+  .tile { width: 96px; height: 96px; border-radius: 22px; overflow: hidden; }
+  .tile svg { width: 100%; height: 100%; display: block; }
+  .lockup { display: flex; align-items: center; gap: 10px; margin-top: 16px; background: #0D0D0D; border-radius: 16px; padding: 18px 20px; }
+  .lockup .m { width: 42px; height: 42px; }
+  .lockup .w { font-size: 26px; font-weight: 800; letter-spacing: -1px; }
+  .lockup .w span { color: var(--blue); }
+  .note { margin-top: 14px; font-size: 9.5px; color: var(--dim); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Crescent</h1>
+      <p>Two circles, one subtraction, one blue blip. No jaw, no teeth, no eye.</p>
+    </div>
+    <a class="link" href="home.html">Home →</a>
+  </div>
+
+  <div class="hero">
+    <div class="big" id="big"></div>
+    <div class="copy">
+      <h2>One shape, one accent.</h2>
+      <p>The crescent is the product: something open, catching. The dot is the job landing inside it. The tilt gives it direction without turning it into a character.</p>
+      <div class="sizes" id="sizes"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell"><div class="tile" id="dark"></div><b>Black tile</b><span>Launcher</span></div>
+    <div class="cell"><div class="tile" id="inverse" style="background:#F5F5F5"></div><b>Inverse</b><span>One colour</span></div>
+    <div class="cell"><div class="tile" id="blue"></div><b>Blue field</b><span>Store / splash</span></div>
+    <div class="cell"><div class="tile" id="small"></div><b>24 px</b><span>Still has a bite</span></div>
+  </div>
+
+  <div class="lockup"><div class="m" id="lock-mark"></div><div class="w">up<span>croc</span></div></div>
+  <div class="note">The mark is cut from a 170 px circle with a 110 px counter, offset 64 px right. The dot sits at the optical centre of the opening, not the geometric one. Everything scales from 512.</div>
+</div>
+<script>
+  const mark = (bg, fg, dot, id) => `
+  <svg viewBox="0 0 512 512" fill="none">
+    ${bg ? '<rect width="512" height="512" fill="' + bg + '"/>' : ''}
+    <mask id="m${id}">
+      <rect width="512" height="512" fill="#000"/>
+      <circle cx="256" cy="256" r="170" fill="#fff"/>
+      <circle cx="320" cy="256" r="110" fill="#000"/>
+    </mask>
+    <g transform="rotate(-10 256 256)">
+      <rect width="512" height="512" fill="${fg}" mask="url(#m${id})"/>
+      <circle cx="368" cy="256" r="27" fill="${dot}"/>
+    </g>
+  </svg>`;
+
+  let n = 0;
+  const M = (bg, fg, dot) => mark(bg, fg, dot, n++);
+
+  document.getElementById('big').innerHTML = M('#000', '#F5F5F5', '#4F8DFD');
+  document.getElementById('dark').innerHTML = M('#000', '#F5F5F5', '#4F8DFD');
+  document.getElementById('inverse').innerHTML = M(null, '#0A0A0A', '#2F6BD9');
+  document.getElementById('blue').innerHTML = M('#2F6BD9', '#FFFFFF', '#111111');
+  document.getElementById('small').innerHTML = M('#000', '#F5F5F5', '#4F8DFD');
+  document.getElementById('lock-mark').innerHTML = M(null, '#F5F5F5', '#4F8DFD');
+
+  const list = [128, 96, 64, 48, 32, 24];
+  document.getElementById('sizes').innerHTML = list.map(function (s) {
+    return '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * 0.22) + 'px">' + M('#000', '#F5F5F5', '#4F8DFD') + '</div><span>' + s + '</span></div>';
+  }).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — live prototype</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 30px 24px 48px; }
+  .live-head { display: flex; align-items: flex-end; justify-content: space-between; max-width: 1560px; margin: 0 auto 20px; gap: 20px; }
+  .live-title { font-size: 21px; font-weight: 800; letter-spacing: -.5px; }
+  .live-sub { color: var(--muted); font-size: 11px; margin-top: 3px; }
+  .live-actions { display: flex; gap: 8px; align-items: center; }
+  .pill-btn { border: 0; background: var(--surface-2); color: var(--text); border-radius: 10px; padding: 9px 13px; font-family: inherit; font-size: 10px; font-weight: 700; cursor: pointer; text-decoration: none; }
+  .pill-btn.primary { background: var(--blue); color: #fff; }
+  .row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; max-width: 1560px; margin: 0 auto 22px; }
+  .cell { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .cell-label { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); font-weight: 700; }
+  .frame { width: 372px; height: 900px; border-radius: 36px; overflow: hidden; background: #000; }
+  iframe { width: 372px; height: 900px; border: 0; background: #000; display: block; }
+  .story { max-width: 1560px; margin: 8px auto 0; display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .story a { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); text-decoration: none; background: var(--surface-2); padding: 8px 11px; border-radius: 9px; font-weight: 650; }
+  .story a b { color: var(--text); font-weight: 750; }
+  .story .arrow { color: var(--dim); font-size: 10px; }
+</style>
+</head>
+<body>
+  <div class="live-head">
+    <div>
+      <div class="live-title">Upcroc — live prototype</div>
+      <div class="live-sub">Start at the home screen and tap the app icon to run the real flow: splash → first-run guide → alerts.</div>
+    </div>
+    <div class="live-actions">
+      <a class="pill-btn primary" href="home.html">Open the flow</a>
+      <a class="pill-btn" href="icon.html">Brand & icons</a>
+      <a class="pill-btn" href="compare.html">Reference</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell"><div class="cell-label">Home</div><div class="frame"><iframe src="home.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">Splash</div><div class="frame"><iframe src="splash.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">First run</div><div class="frame"><iframe src="onboarding.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">Alerts</div><div class="frame"><iframe src="alerts.html"></iframe></div></div>
+  </div>
+  <div class="row">
+    <div class="cell"><div class="cell-label">Search</div><div class="frame"><iframe src="search.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">Settings</div><div class="frame"><iframe src="settings.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">Diagnostics</div><div class="frame"><iframe src="logs.html"></iframe></div></div>
+    <div class="cell"><div class="cell-label">Job</div><div class="frame"><iframe src="job.html"></iframe></div></div>
+  </div>
+
+  <div class="story">
+    <a href="home.html"><b>Home</b></a><span class="arrow">→</span>
+    <a href="splash.html"><b>Splash</b></a><span class="arrow">→</span>
+    <a href="onboarding.html"><b>Guide</b></a><span class="arrow">→</span>
+    <a href="alerts.html"><b>Alerts</b></a><span class="arrow">→</span>
+    <a href="job.html"><b>Job</b></a><span class="arrow">→</span>
+    <a href="search.html"><b>Search</b></a><span class="arrow">→</span>
+    <a href="settings.html"><b>Settings</b></a><span class="arrow">→</span>
+    <a href="logs.html"><b>Diagnostics</b></a>
+  </div>
+
+  <script>
+    document.querySelectorAll('iframe').forEach(function (frame) {
+      const embed = function () {
+        try { frame.contentDocument.body.classList.add('embed'); } catch (error) {}
+      };
+      frame.addEventListener('load', embed);
+      embed();
+    });
+  </script>
+</body>
+</html>

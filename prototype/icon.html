@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — Brand</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="icon.css">
+</head>
+<body>
+<div class="sheet">
+  <div class="sheet-head">
+    <div>
+      <h1>Brand & icon</h1>
+      <p>One mark, drawn as vectors, used at every size.</p>
+    </div>
+    <a class="link" href="home.html">Open home screen →</a>
+  </div>
+
+  <div class="hero">
+    <div class="icon-512" id="appicon" data-app-icon></div>
+    <div class="hero-copy">
+      <div class="wordmark">up<span>croc</span></div>
+      <div class="tagline">Upwork job alerts</div>
+      <div class="hero-note">One closed bezier: a crescent with a deep bite, and one blue blip in the void. No booleans, no stacked shapes.</div>
+      <div class="sizes">
+        <figure><div class="tile" style="width:72px;height:72px" data-app-icon></div><figcaption>192</figcaption></figure>
+        <figure><div class="tile" style="width:44px;height:44px" data-app-icon></div><figcaption>96</figcaption></figure>
+        <figure><div class="tile" style="width:26px;height:26px" data-app-icon></div><figcaption>48</figcaption></figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Adaptive masks</h2>
+    <p>The mark sits inside the 66% safe zone, so circle, squircle and round-rect launchers all crop cleanly.</p>
+    <div class="masks">
+      <div class="mask-wrap"><div class="mask circle" data-app-icon></div><div class="mask-label">Circle</div></div>
+      <div class="mask-wrap"><div class="mask squircle" data-app-icon></div><div class="mask-label">Squircle</div></div>
+      <div class="mask-wrap"><div class="mask round" data-app-icon></div><div class="mask-label">Round rect</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Construction</h2>
+    <p>Four primitives, no hand-drawn outline. The blue is the same accent as the app.</p>
+    <p style="margin:0;font-size:11px;line-height:1.7;color:var(--muted);max-width:760px">
+      Top tip 438,146. Outer sweep through 338,108 and 104,164 to 104,258, then 104,352 / 300,408 to the lower tip at 378,370. The inner return runs through 230,330 and 214,182 back to the top tip, so both ends are shared and nothing overlaps. The blip sits at 382,256.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Interface icons</h2>
+    <p>Custom set, 24 px grid, 1.6 px stroke. No stock Material or Feather glyphs.</p>
+    <div class="icon-grid" id="icon-grid"></div>
+  </div>
+</div>
+<script src="icons.js"></script>
+<script src="brand.js"></script>
+<script src="shared.js"></script>
+<script>
+  const grid = document.getElementById('icon-grid');
+  Object.keys(ICONS).forEach(function (key) {
+    const cell = document.createElement('div');
+    cell.className = 'icon-cell';
+    cell.innerHTML = '<div class="glyph">' + ICONS[key] + '</div><span>' + key + '</span>';
+    grid.appendChild(cell);
+  });
+</script>
+</body>
+</html>

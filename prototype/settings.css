@@ -1,0 +1,22 @@
+.account-card { display: flex; align-items: center; gap: 12px; margin-top: 2px; padding: 15px; border-radius: 16px; background: #161616; }
+.account-copy { flex: 1; min-width: 0; }
+.profile-name { font-size: 16px; font-weight: 800; letter-spacing: -.4px; }
+.profile-sub { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.status-chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 9px; border-radius: 999px; background: #10241A; color: #6CCF8E; font-size: 9.5px; font-weight: 750; letter-spacing: .02em; }
+.status-chip i { width: 5px; height: 5px; border-radius: 50%; background: #22C55E; }
+
+.settings-row { display: flex; align-items: center; gap: 12px; padding: 15px 15px; margin-top: 8px; background: #1A1A1A; border-radius: 14px; cursor: pointer; }
+.settings-row:first-of-type { margin-top: 0; }
+.settings-body { flex: 1; min-width: 0; }
+.settings-title { font-size: 13px; font-weight: 700; letter-spacing: -.1px; }
+.settings-sub { font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
+.settings-value { font-size: 10px; color: var(--muted); font-weight: 650; }
+.chev { color: var(--dim); display: flex; }
+.chev .i { width: 15px; height: 15px; }
+.signout .settings-title { color: var(--err); }
+
+.about { margin-top: 20px; padding: 15px; border-radius: 14px; background: #161616; }
+.about b { font-size: 11px; font-weight: 750; }
+.about p { margin: 4px 0 0; font-size: 9.5px; color: var(--muted); line-height: 1.55; }
+.about-links { display: flex; gap: 16px; margin-top: 11px; }
+.about-links .link { font-size: 10px; }

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — crescent v2</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 36px 30px 60px; }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
+  .top h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.6px; }
+  .top p { margin: 5px 0 0; font-size: 10.5px; color: var(--muted); }
+  .row { display: flex; gap: 18px; align-items: flex-start; }
+  .panel { background: #0D0D0D; border-radius: 18px; padding: 16px; flex: 1; }
+  .panel h2 { margin: 0 0 4px; font-size: 12px; font-weight: 800; }
+  .panel .sub { margin: 0 0 12px; font-size: 9px; line-height: 1.5; color: var(--muted); min-height: 28px; }
+  .tile { width: 100%; aspect-ratio: 1; border-radius: 24%; overflow: hidden; background: #000; }
+  .tile svg { width: 100%; height: 100%; display: block; }
+  .inverse { background: #F5F5F5; }
+  .sizes { display: flex; align-items: flex-end; gap: 10px; margin-top: 12px; }
+  .s { display: flex; flex-direction: column; gap: 5px; align-items: center; font-size: 7px; color: var(--dim); }
+  .s .b { overflow: hidden; background: #000; border-radius: 22%; }
+  .s svg { display: block; width: 100%; height: 100%; }
+  .lockup { display: flex; align-items: center; gap: 10px; margin-top: 16px; background: #0D0D0D; border-radius: 16px; padding: 16px 18px; justify-content: center; }
+  .lockup .m { width: 34px; height: 34px; }
+  .lockup .w { font-size: 24px; font-weight: 800; letter-spacing: -1px; }
+  .lockup .w span { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><h1>Crescent — elliptical bite</h1><p>Outer contour kept organic. The bite is an ellipse, narrow, right edge on the mark’s right edge.</p></div>
+    <a class="link" href="crescent.html">Previous →</a>
+  </div>
+
+  <div class="row">
+    <div class="panel">
+      <h2>v1 — original</h2>
+      <p class="sub">The one you liked. Bite is hand-drawn and deep.</p>
+      <div class="tile" id="v1"></div>
+      <div class="sizes" id="v1-sizes"></div>
+    </div>
+    <div class="panel">
+      <h2>v2 — ellipse, aligned</h2>
+      <p class="sub">Elliptical bite, squeezed width, right edge flush. Dot moved into the opening.</p>
+      <div class="tile" id="v2"></div>
+      <div class="sizes" id="v2-sizes"></div>
+    </div>
+    <div class="panel">
+      <h2>v3 — tight ellipse</h2>
+      <p class="sub">Narrower still. Tests whether the dot survives at 24 px.</p>
+      <div class="tile" id="v3"></div>
+      <div class="sizes" id="v3-sizes"></div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:16px">
+    <div class="panel" style="flex:1">
+      <h2>v2 inverse</h2>
+      <div class="tile inverse" id="v2i"></div>
+    </div>
+    <div class="panel" style="flex:1">
+      <h2>v2 at 24</h2>
+      <div style="display:flex;justify-content:center;padding:34px 0"><div class="s"><div class="b" id="v2-24" style="width:24px;height:24px"></div></div></div>
+    </div>
+    <div class="panel" style="flex:1">
+      <h2>Lockup</h2>
+      <div class="lockup"><div class="m" id="lock"></div><div class="w">up<span>croc</span></div></div>
+    </div>
+  </div>
+</div>
+<script>
+  const V1 = (bg, fg) => `
+  <svg viewBox="0 0 512 512" fill="none">
+    ${bg ? '<rect width="512" height="512" fill="' + bg + '"/>' : ''}
+    <g transform="rotate(-10 256 256)">
+      <path d="M432 150C330 120 118 168 118 256c0 88 212 136 268 106-44-24-86-58-86-106 0-48 44-82 132-106z" fill="${fg}"/>
+      <circle cx="372" cy="254" r="25" fill="#4F8DFD"/>
+    </g>
+  </svg>`;
+
+  const ellipseMark = (bg, fg, rx, ry, dotX, dotR, id) => `
+  <svg viewBox="0 0 512 512" fill="none">
+    ${bg ? '<rect width="512" height="512" fill="' + bg + '"/>' : ''}
+    <mask id="e${id}">
+      <rect width="512" height="512" fill="#000"/>
+      <path d="M432 150C330 118 116 166 116 256c0 90 214 138 270 106 34-18 50-152 46-212z" fill="#fff"/>
+      <ellipse cx="352" cy="256" rx="${rx}" ry="${ry}" fill="#000"/>
+    </mask>
+    <g transform="rotate(-10 256 256)">
+      <rect width="512" height="512" fill="${fg}" mask="url(#e${id})"/>
+      <circle cx="${dotX}" cy="256" r="${dotR}" fill="#4F8DFD"/>
+    </g>
+  </svg>`;
+
+  let n = 0;
+  const V2 = (bg, fg) => ellipseMark(bg, fg, 86, 130, 402, 24, n++);
+  const V3 = (bg, fg) => ellipseMark(bg, fg, 76, 136, 404, 22, n++);
+
+  document.getElementById('v1').innerHTML = V1('#000', '#F5F5F5');
+  document.getElementById('v2').innerHTML = V2('#000', '#F5F5F5');
+  document.getElementById('v3').innerHTML = V3('#000', '#F5F5F5');
+  document.getElementById('v2i').innerHTML = V2(null, '#0A0A0A');
+  document.getElementById('v2-24').innerHTML = V2('#000', '#F5F5F5');
+  document.getElementById('lock').innerHTML = ellipseMark(null, '#F5F5F5', 86, 130, 402, 24, n++);
+
+  const sizes = [96, 64, 48, 32, 24];
+  document.getElementById('v1-sizes').innerHTML = sizes.map(s => '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px">' + V1('#000', '#F5F5F5') + '</div><span>' + s + '</span></div>').join('');
+  document.getElementById('v2-sizes').innerHTML = sizes.map(s => '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px">' + V2('#000', '#F5F5F5') + '</div><span>' + s + '</span></div>').join('');
+  document.getElementById('v3-sizes').innerHTML = sizes.map(s => '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px">' + V3('#000', '#F5F5F5') + '</div><span>' + s + '</span></div>').join('');
+</script>
+</body>
+</html>

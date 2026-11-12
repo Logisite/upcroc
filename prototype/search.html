@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — Search</title>
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="search.css">
+</head>
+<body>
+<div class="stage">
+  <div class="frame-wrap">
+    <div class="frame-label">Search</div>
+    <div class="phone">
+      <div class="status"><span>3:24</span><span class="icons">●●● 5G ▰</span></div>
+      <div class="app">
+        <div class="topbar">
+          <div class="hello">
+            <div class="avatar" style="width:34px;height:34px;font-size:10px">SC</div>
+            <div class="hello-copy"><div class="hello-sub">3 groups · shared filters</div><div class="hello-name">Search</div></div>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-btn" data-action="toast" data-msg="Layer 0 opened" aria-label="Layer 0"><span class="i" data-icon="layers"></span></button>
+          </div>
+        </div>
+
+        <div class="seg">
+          <button class="active" data-seg="searches">Searches</button>
+          <button data-seg="quota">Quota</button>
+        </div>
+
+        <div data-panel="searches">
+          <div class="section-row"><div class="section-label">Search groups</div><button class="link" data-action="toast" data-msg="Add search opened">Add</button></div>
+          <div class="group">
+            <div class="card group-card" data-action="toast" data-msg="Primary matches editor opened">
+              <div class="group-head"><div class="num">1</div><div class="group-copy"><div class="group-title">Primary matches</div><div class="group-mode">Smart · every 2 min</div><div class="group-kw">Keywords <span>Optional</span></div></div><div class="switch on"></div></div>
+            </div>
+            <div class="card group-card" data-action="toast" data-msg="AI automation editor opened">
+              <div class="group-head"><div class="num">2</div><div class="group-copy"><div class="group-title">AI automation</div><div class="group-mode">Keyword · every 15 min</div><div class="group-kw">Keywords <span>AI automation</span></div></div><div class="switch on"></div></div>
+            </div>
+            <div class="card group-card" data-action="toast" data-msg="n8n editor opened">
+              <div class="group-head"><div class="num off">3</div><div class="group-copy"><div class="group-title">n8n</div><div class="group-mode">Keyword · paused</div><div class="group-kw">Keywords <span>n8n</span></div></div><div class="switch"></div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-label">Core filters</div>
+            <div class="chips">
+              <div class="chip active">Hourly</div><div class="chip">Fixed</div><div class="chip">Expert</div><div class="chip">$40+/hr</div>
+            </div>
+            <div class="grid2">
+              <div class="field"><div><div class="label">Proposals</div><div class="value">≤ 10</div></div></div>
+              <div class="field"><div><div class="label">Client hires</div><div class="value">1+</div></div></div>
+            </div>
+            <div class="field" data-action="open-sheet"><div><div class="label">More filters</div><div class="value">Location, budget, words, duration</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+          </div>
+
+          <button class="btn primary" style="width:100%;margin-top:10px" data-action="save">Save search</button>
+
+          <div class="section-row"><div class="section-label">Recent checks</div><a class="link" href="logs.html">View all</a></div>
+          <div class="card" style="padding-top:4px;padding-bottom:4px">
+            <div class="check">
+              <div class="avatar">1</div><div class="check-body"><div class="check-title">Primary matches</div><div class="check-sub">0 new · 1 page · 312 ms</div></div><div class="check-status ok">OK</div>
+            </div>
+            <div class="check">
+              <div class="avatar">2</div><div class="check-body"><div class="check-title">AI automation</div><div class="check-sub">2 new · 1 page · 268 ms</div></div><div class="check-status ok">OK</div>
+            </div>
+          </div>
+        </div>
+
+        <div data-panel="quota" style="display:none">
+          <div class="card">
+            <div class="section-label">Requests today</div>
+            <div class="donut-sub">Soft limit · resets at midnight</div>
+            <div class="donut-wrap">
+              <div class="donut">
+                <svg viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#1C1C1C" stroke-width="12"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#4F8DFD" stroke-width="12" stroke-dasharray="135 167" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#8B5CF6" stroke-width="12" stroke-dasharray="70 232" stroke-dashoffset="-135" transform="rotate(-90 60 60)"/>
+                  <circle cx="60" cy="60" r="48" fill="none" stroke="#F59E0B" stroke-width="12" stroke-dasharray="45 257" stroke-dashoffset="-205" transform="rotate(-90 60 60)"/>
+
+                </svg>
+                <div class="donut-center"><b>8 / 750</b><span>requests today</span></div>
+              </div>
+            </div>
+            <div class="legend">
+              <div class="legend-row"><i class="legend-dot" style="background:#4F8DFD"></i>Smart <b>4</b></div>
+              <div class="legend-row"><i class="legend-dot" style="background:#8B5CF6"></i>Keyword <b>3</b></div>
+              <div class="legend-row"><i class="legend-dot" style="background:#F59E0B"></i>Enrich <b>1</b></div>
+              <div class="legend-row remainder"><i class="legend-dot" style="background:#3A3A3A"></i>Remaining <b>742</b></div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-card"><b>84</b><span>alerts this week</span></div>
+              <div class="stat-card"><b>1m 12s</b><span>p50 latency</span></div>
+              <div class="stat-card"><b>12</b><span>saved jobs</span></div>
+              <div class="stat-card"><b>0</b><span>failures</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-label">Recent checks</div>
+            <div class="check">
+              <div class="avatar">1</div><div class="check-body"><div class="check-title">Primary matches</div><div class="check-sub">0 new · 4 pages · 312 ms</div></div><div class="check-status ok">OK</div>
+            </div>
+            <div class="check">
+              <div class="avatar">2</div><div class="check-body"><div class="check-title">AI automation</div><div class="check-sub">2 new · 1 page · 268 ms</div></div><div class="check-status ok">OK</div>
+            </div>
+            <div class="check">
+              <div class="avatar">3</div><div class="check-body"><div class="check-title">n8n</div><div class="check-sub">paused · no request</div></div><div class="check-status">Paused</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav-item" href="alerts.html" aria-label="Alerts"><span class="i" data-icon="radar"></span></a>
+        <a class="nav-item active" href="search.html" aria-label="Search"><span class="i" data-icon="search"></span></a>
+        <a class="nav-item" href="settings.html" aria-label="Settings"><span class="i" data-icon="settings"></span></a>
+      </nav>
+
+      <div class="sheet-backdrop" data-action="close-sheet"></div>
+      <div class="sheet">
+        <div class="handle"></div>
+        <div class="section-label">Advanced filters</div>
+        <div class="field"><div><div class="label">Client location</div><div class="value">Anywhere</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+        <div class="field"><div><div class="label">Fixed budget</div><div class="value">$1,000+</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+        <div class="field"><div><div class="label">Must include words</div><div class="value">Add words</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+        <div class="field"><div><div class="label">Project duration</div><div class="value">Any</div></div><div class="chev"><span class="i" data-icon="chevron"></span></div></div>
+        <button class="btn primary" style="width:100%;margin-top:12px" data-action="close-sheet">Apply filters</button>
+      </div>
+      <div class="toast"></div>
+    </div>
+  </div>
+</div>
+<script src="icons.js"></script>
+<script src="shared.js"></script>
+<script src="search.js"></script>
+</body>
+</html>

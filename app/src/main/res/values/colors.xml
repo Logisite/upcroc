@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="upcroc_primary">#4F8DFD</color>
+    <color name="upcroc_primary_dark">#1D4ED8</color>
+    <color name="upcroc_accent">#4F8DFD</color>
+    <color name="upcroc_surface">#000000</color>
+    <color name="upcroc_surface_dark">#000000</color>
+    <color name="ic_launcher_background">#000000</color>
+</resources>

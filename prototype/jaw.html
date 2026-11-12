@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — jaw</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 40px 30px 60px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  .top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; }
+  .top h1 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.6px; }
+  .top p { margin: 5px 0 0; font-size: 10.5px; color: var(--muted); }
+  .hero { display: flex; gap: 28px; align-items: center; background: #0D0D0D; border-radius: 22px; padding: 22px; }
+  .big { width: 240px; height: 240px; border-radius: 54px; overflow: hidden; background: #000; flex: 0 0 auto; }
+  .big svg { width: 100%; height: 100%; display: block; }
+  .copy h2 { margin: 0; font-size: 19px; font-weight: 800; letter-spacing: -.4px; }
+  .copy p { margin: 6px 0 0; font-size: 10.5px; line-height: 1.6; color: var(--muted); max-width: 440px; }
+  .sizes { display: flex; align-items: flex-end; gap: 14px; margin-top: 18px; }
+  .sizes .s { display: flex; flex-direction: column; gap: 5px; align-items: center; font-size: 7.5px; color: var(--dim); }
+  .sizes .b { overflow: hidden; background: #000; border-radius: 22%; }
+  .sizes svg { display: block; width: 100%; height: 100%; }
+  .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .cell { background: #0D0D0D; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .cell b { font-size: 10.5px; font-weight: 750; }
+  .cell span { font-size: 9px; color: var(--muted); text-align: center; }
+  .tile { width: 108px; height: 108px; border-radius: 24px; overflow: hidden; }
+  .tile svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Jaw v3</h1>
+      <p>Deeper mouth, shorter lower jaw, eye cut, blip inside the bite.</p>
+    </div>
+    <a class="link" href="mark-lab-2.html">Lab →</a>
+  </div>
+
+  <div class="hero">
+    <div class="big" id="big"></div>
+    <div class="copy">
+      <h2>A croc, not a crescent.</h2>
+      <p>The upper jaw carries the length, the lower jaw stops short, and the gap between them is the bite. One eye cut, one blue blip caught inside. Tilted 8° so it has direction.</p>
+      <div class="sizes" id="sizes"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="cell"><div class="tile" id="dark"></div><b>On black</b><span>Launcher default.</span></div>
+    <div class="cell"><div class="tile" id="inv" style="background:#F5F5F5"></div><b>Inverse</b><span>Must survive.</span></div>
+    <div class="cell"><div class="tile" id="small"></div><b>24 px</b><span>The only test that matters.</span></div>
+  </div>
+</div>
+<script>
+  const JAW = (bg, fg, eye) => `
+  <svg viewBox="0 0 512 512" fill="none">
+    ${bg ? '<rect width="512" height="512" fill="' + bg + '"/>' : ''}
+    <g transform="rotate(-8 256 256)">
+      <path d="M152 198C196 186 232 196 254 214L452 260C472 265 482 276 480 288C478 300 464 306 446 306L268 306L268 344L432 336C448 336 458 344 458 354C458 366 446 374 430 376L232 390C178 394 140 370 134 326C128 280 134 214 152 198Z" fill="${fg}"/>
+      <circle cx="232" cy="246" r="20" fill="${eye}"/>
+      <circle cx="386" cy="324" r="19" fill="#4F8DFD"/>
+    </g>
+  </svg>`;
+
+  document.getElementById('big').innerHTML = JAW('#000', '#F5F5F5', '#000');
+  document.getElementById('dark').innerHTML = JAW('#000', '#F5F5F5', '#000');
+  document.getElementById('inv').innerHTML = JAW(null, '#0A0A0A', '#F5F5F5');
+  document.getElementById('small').innerHTML = JAW('#000', '#F5F5F5', '#000');
+
+  const list = [128, 96, 64, 48, 32, 24];
+  document.getElementById('sizes').innerHTML = list.map(function (s) {
+    return '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * 0.22) + 'px">' + JAW('#000', '#F5F5F5', '#000') + '</div><span>' + s + '</span></div>';
+  }).join('');
+</script>
+</body>
+</html>

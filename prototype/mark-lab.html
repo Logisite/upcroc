@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — mark lab</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 34px 30px 60px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+  .head h1 { margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -.6px; }
+  .head p { margin: 5px 0 0; font-size: 10.5px; color: var(--muted); }
+  .ref { display: flex; gap: 18px; align-items: center; background: #0D0D0D; border-radius: 18px; padding: 16px; margin-bottom: 18px; }
+  .ref img { width: 420px; border-radius: 10px; display: block; }
+  .ref div { font-size: 10px; line-height: 1.6; color: var(--muted); }
+  .ref b { display: block; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .col { background: #0D0D0D; border-radius: 18px; padding: 16px; }
+  .col h2 { margin: 0 0 2px; font-size: 13px; font-weight: 800; }
+  .col .why { margin: 0 0 12px; font-size: 9.5px; line-height: 1.5; color: var(--muted); min-height: 42px; }
+  .tile { width: 100%; aspect-ratio: 1; border-radius: 24%; overflow: hidden; background: #000; }
+  .tile svg { width: 100%; height: 100%; display: block; }
+  .inverse { background: #F5F5F5; }
+  .sizes { display: flex; align-items: flex-end; gap: 12px; margin-top: 12px; }
+  .sizes .s { display: flex; flex-direction: column; gap: 5px; align-items: center; font-size: 7.5px; color: var(--dim); }
+  .sizes .s .b { overflow: hidden; background: #000; border-radius: 22%; }
+  .sizes .s .b svg { display: block; width: 100%; height: 100%; }
+  .tiny { margin-top: 10px; font-size: 9px; color: var(--dim); line-height: 1.5; }
+  .callout { margin-top: 18px; background: #0D0D0D; border-radius: 14px; padding: 14px 16px; font-size: 10px; line-height: 1.6; color: var(--muted); }
+  .callout b { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>Mark lab — folded jaw</h1>
+      <p>Three attempts in the reference's language: one material, one cut, test inverted.</p>
+    </div>
+    <a class="link" href="icon.html">Brand sheet →</a>
+  </div>
+
+  <div class="ref">
+    <img src="ref-monograms.png" alt="Reference monogram sheet">
+    <div>
+      <b>What we're fitting into</b>
+      Solid mass. One material. The void is a subject, not leftover. 20° lean. Reads inverted. At most one internal cut. Animal = metaphor, not portrait.
+    </div>
+  </div>
+
+  <div class="grid3">
+    <div class="col">
+      <h2>A. Jaw</h2>
+      <p class="why">A ribbon bent into an open jaw. Upper jaw longer, lower jaw shorter, one blue blip caught in the bite. Reads as “catch”.</p>
+      <div class="tile" id="a-dark"></div>
+      <div class="sizes" id="a-sizes"></div>
+      <div class="tile inverse" id="a-inv" style="margin-top:12px"></div>
+      <div class="tiny">No eye, no fangs. One continuous taper does the animal.</div>
+    </div>
+
+    <div class="col">
+      <h2>B. Fold</h2>
+      <p class="why">The literal U: right arm folds into a snout, the fold’s inner corner cut into a slot. The U stays a U.</p>
+      <div class="tile" id="b-dark"></div>
+      <div class="sizes" id="b-sizes"></div>
+      <div class="tile inverse" id="b-inv" style="margin-top:12px"></div>
+      <div class="tiny">Risk: at 24 px the fold closes into a blob.</div>
+    </div>
+
+    <div class="col">
+      <h2>C. Head</h2>
+      <p class="why">One closed silhouette with a single blue mouth slot. Closest to the penguin/elephant logic, but literal.</p>
+      <div class="tile" id="c-dark"></div>
+      <div class="sizes" id="c-sizes"></div>
+      <div class="tile inverse" id="c-inv" style="margin-top:12px"></div>
+      <div class="tiny">Risk: reads as a shoe or a whale at small sizes.</div>
+    </div>
+  </div>
+
+  <div class="callout" id="verdict"></div>
+</div>
+<script>
+  const A = (fg, blip) => `
+    <svg viewBox="0 0 512 512" fill="none">
+      <g transform="rotate(-10 256 256)">
+        <path d="M432 150C330 120 118 168 118 256c0 88 212 136 268 106-44-24-86-58-86-106 0-48 44-82 132-106z" fill="${fg}"/>
+        <circle cx="372" cy="254" r="25" fill="${blip}"/>
+      </g>
+    </svg>`;
+
+  const B = (fg, cut) => `
+    <svg viewBox="0 0 512 512" fill="none">
+      <g transform="rotate(-8 256 256)">
+        <path d="M124 132v136c0 88 58 140 132 140s132-52 132-140v-52h-70v52c0 50-24 78-62 78s-62-28-62-78V132z" fill="${fg}"/>
+        <path d="M388 132h58c14 0 22 8 22 22v38c0 14-8 22-22 22h-58z" fill="${fg}"/>
+        <path d="M330 200h96l-40 64h-56z" fill="${cut}"/>
+      </g>
+    </svg>`;
+
+  const C = (fg, slot) => `
+    <svg viewBox="0 0 512 512" fill="none">
+      <g transform="rotate(-9 256 256)">
+        <path d="M436 208c-16-42-56-72-104-72-70 0-124 54-124 120s54 120 124 120c52 0 94-32 108-78l-58-22c-8 26-28 42-52 42-34 0-58-28-58-62s24-62 58-62c24 0 44 16 52 40z" fill="${fg}"/>
+        <path d="M436 208l-52 20-8-40z" fill="${slot}" opacity="0"/>
+      </g>
+    </svg>`;
+
+  function paint(id, svg) { document.getElementById(id).innerHTML = svg; }
+  function sizes(id, fn) {
+    const list = [96, 64, 48, 32, 24];
+    document.getElementById(id).innerHTML = list.map(function (s) {
+      return '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px">' + fn() + '</div><span>' + s + '</span></div>';
+    }).join('');
+  }
+
+  paint('a-dark', A('#F5F5F5', '#4F8DFD'));
+  paint('a-inv', A('#0A0A0A', '#2F6BD9'));
+  sizes('a-sizes', () => A('#F5F5F5', '#4F8DFD'));
+
+  paint('b-dark', B('#F5F5F5', '#000000'));
+  paint('b-inv', B('#0A0A0A', '#F5F5F5'));
+  sizes('b-sizes', () => B('#F5F5F5', '#000000'));
+
+  paint('c-dark', C('#F5F5F5', '#000'));
+  paint('c-inv', C('#0A0A0A', '#FFF'));
+  sizes('c-sizes', () => C('#F5F5F5', '#000'));
+
+  document.getElementById('verdict').innerHTML = '<b>Honest verdict:</b> compare at 24 px. A keeps a bite; B loses the fold; C is a C, not a croc. Pick the one that still has its gesture in the smallest tile.';
+</script>
+</body>
+</html>

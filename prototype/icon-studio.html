@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — icon studio</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 40px 30px 60px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 24px; }
+  .head h1 { margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -.7px; }
+  .head p { margin: 5px 0 0; font-size: 11px; color: var(--muted); }
+  .hero { display: flex; gap: 26px; align-items: center; padding: 24px; background: #0D0D0D; border-radius: 22px; }
+  .big { width: 260px; height: 260px; border-radius: 58px; overflow: hidden; background: #000; flex: 0 0 auto; }
+  .big svg { width: 100%; height: 100%; display: block; }
+  .hero-copy h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -.5px; }
+  .hero-copy p { margin: 6px 0 0; font-size: 10.5px; line-height: 1.6; color: var(--muted); max-width: 420px; }
+  .sizes { display: flex; gap: 16px; align-items: flex-end; margin-top: 20px; }
+  .size { display: flex; flex-direction: column; gap: 6px; align-items: center; font-size: 8px; color: var(--dim); }
+  .size .t { overflow: hidden; background: #000; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+  .variant { background: #0D0D0D; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .variant .tile { width: 116px; height: 116px; border-radius: 26px; overflow: hidden; }
+  .variant .tile svg { width: 100%; height: 100%; display: block; }
+  .variant b { font-size: 11px; font-weight: 750; }
+  .variant span { font-size: 9px; color: var(--muted); text-align: center; line-height: 1.5; }
+  .construct { margin-top: 16px; background: #0D0D0D; border-radius: 18px; padding: 20px; display: flex; gap: 24px; align-items: center; }
+  .construct .draw { width: 240px; height: 240px; flex: 0 0 auto; }
+  .construct .draw svg { width: 100%; height: 100%; }
+  .construct ol { margin: 0; padding-left: 16px; }
+  .construct li { font-size: 10px; line-height: 1.65; color: var(--muted); margin-bottom: 6px; }
+  .construct li b { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <h1>Icon studio</h1>
+      <p>Built from four primitives: head mass, snout capsule, jaw, eye. Teeth are cut, not drawn.</p>
+    </div>
+    <a class="link" href="icon-lab.html">Other directions →</a>
+  </div>
+
+  <div class="hero">
+    <div class="big" id="candidate"></div>
+    <div class="hero-copy">
+      <h2>Croc, side profile</h2>
+      <p>Long snout, open jaw, four fangs, slit eye. The silhouette does the work; the blue is only the eye. No letterform, no radar cliché, no accidental face.</p>
+      <div class="sizes" id="sizes"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="variant"><div class="tile" id="v-dark"></div><b>On black</b><span>Default launcher background.</span></div>
+    <div class="variant"><div class="tile" id="v-blue"></div><b>On accent</b><span>Blue tile, white mark. Use for splash and store art.</span></div>
+    <div class="variant"><div class="tile" id="v-mono"></div><b>Monochrome</b><span>Pure white. Notification icon and themed icons.</span></div>
+  </div>
+
+  <div class="construct">
+    <div class="draw" id="guide"></div>
+    <ol>
+      <li><b>Head mass</b> — a 192 px circle at (176, 268), with an eye ridge.</li>
+      <li><b>Snout</b> — a tapered wedge: 74 px deep at the head, 56 px at the tip.</li>
+      <li><b>Jaw</b> — 200 px long, hinged at the head, tapering to the right.</li>
+      <li><b>Mouth</b> — one 34 px gap; teeth are triangles inside it.</li>
+      <li><b>Eye</b> — 21 px blue iris with a 5.5 × 14.5 slit, set on the ridge.</li>
+    </ol>
+  </div>
+</div>
+<script>
+  const HEAD = `
+    <rect width="512" height="512" fill="BG"/>
+    <circle cx="176" cy="276" r="100" fill="FG"/>
+    <circle cx="228" cy="196" r="28" fill="FG"/>
+    <path d="M176 252h216c30 0 50 16 50 40 0 18-16 32-40 32H176z" fill="FG"/>
+    <path d="M232 354h148c24 0 40 10 42 25 2 14-10 25-30 25H250c-20 0-34-11-36-25-1-10 4-18 18-25z" fill="FG"/>
+    <path d="M298 324l12 19 12-19zM342 324l12 19 12-19zM386 324l12 19 12-19z" fill="FG"/>
+    <path d="M318 354l11-18 11 18zM362 354l11-18 11 18z" fill="FG"/>
+    <circle cx="228" cy="196" r="20" fill="#4F8DFD"/>
+    <ellipse cx="228" cy="196" rx="5" ry="14" fill="#0A0A0A"/>
+  `;
+  const mark = (bg, fg) => `<svg viewBox="0 0 512 512" fill="none">${HEAD.replace(/BG/g, bg).replace(/FG/g, fg)}</svg>`;
+
+  document.getElementById('candidate').innerHTML = mark('#000000', '#F5F5F5');
+  document.getElementById('v-dark').innerHTML = mark('#000000', '#F5F5F5');
+  document.getElementById('v-blue').innerHTML = mark('#2F6BD9', '#FFFFFF');
+  document.getElementById('v-mono').innerHTML = mark('#000000', '#FFFFFF');
+
+  const sizes = [128, 96, 48, 32, 24];
+  document.getElementById('sizes').innerHTML = sizes.map(function (s) {
+    return '<div class="size"><div class="t" style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * 0.22) + 'px">' + mark('#000000', '#F5F5F5') + '</div><span>' + s + ' px</span></div>';
+  }).join('');
+
+  document.getElementById('guide').innerHTML = `
+    <svg viewBox="0 0 512 512" fill="none">
+      <rect width="512" height="512" fill="#0A0A0A"/>
+      <circle cx="176" cy="268" r="94" stroke="#2A2A2A"/>
+      <circle cx="222" cy="196" r="26" stroke="#2A2A2A"/>
+      <rect x="176" y="246" width="272" height="74" rx="37" stroke="#2A2A2A"/>
+      <rect x="214" y="352" width="202" height="54" rx="24" stroke="#2A2A2A"/>
+      <path d="M256 90v332M90 256h332" stroke="#1A1A1A"/>
+      <circle cx="176" cy="268" r="94" stroke="#4F8DFD" stroke-opacity=".35" stroke-dasharray="4 6"/>
+      <rect x="176" y="246" width="272" height="74" rx="37" stroke="#4F8DFD" stroke-opacity=".35" stroke-dasharray="4 6"/>
+      <circle cx="222" cy="196" r="18" fill="#4F8DFD" fill-opacity=".35"/>
+    </svg>`;
+</script>
+</body>
+</html>

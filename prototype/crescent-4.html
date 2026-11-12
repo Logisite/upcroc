@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcroc — concavity</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  body { padding: 38px 30px 60px; }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .top { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; }
+  .top h1 { margin: 0; font-size: 22px; font-weight: 800; letter-spacing: -.6px; }
+  .top p { margin: 5px 0 0; font-size: 10.5px; color: var(--muted); }
+  .row { display: flex; gap: 16px; align-items: flex-start; }
+  .panel { background: #0D0D0D; border-radius: 18px; padding: 16px; flex: 1; }
+  .panel h2 { margin: 0 0 3px; font-size: 12px; font-weight: 800; }
+  .panel .sub { margin: 0 0 12px; font-size: 9px; color: var(--muted); line-height: 1.5; min-height: 26px; }
+  .tile { width: 100%; aspect-ratio: 1; border-radius: 24%; overflow: hidden; background: #000; }
+  .tile svg { width: 100%; height: 100%; display: block; }
+  .sizes { display: flex; align-items: flex-end; gap: 10px; margin-top: 12px; }
+  .s { display: flex; flex-direction: column; gap: 5px; align-items: center; font-size: 7px; color: var(--dim); }
+  .s .b { overflow: hidden; background: #000; border-radius: 22%; }
+  .s svg { display: block; width: 100%; height: 100%; }
+  .lockup { display: flex; align-items: center; gap: 10px; margin-top: 14px; background: #0D0D0D; border-radius: 16px; padding: 16px 18px; justify-content: center; }
+  .lockup .m { width: 32px; height: 32px; }
+  .lockup .w { font-size: 23px; font-weight: 800; letter-spacing: -1px; }
+  .lockup .w span { color: var(--blue); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><h1>Concavity</h1><p>Same outer contour, same tips. The inner curve goes deeper. Dot follows the optical centre of the bite.</p></div>
+    <a class="link" href="crescent-3.html">Previous →</a>
+  </div>
+
+  <div class="row">
+    <div class="panel">
+      <h2>Now</h2>
+      <p class="sub">Inner mid x ≈ 354. Barely a dent.</p>
+      <div class="tile" id="a"></div>
+      <div class="sizes" id="a-sizes"></div>
+    </div>
+    <div class="panel">
+      <h2>Concave</h2>
+      <p class="sub">Inner mid x ≈ 285. The curve actually dips.</p>
+      <div class="tile" id="b"></div>
+      <div class="sizes" id="b-sizes"></div>
+    </div>
+    <div class="panel">
+      <h2>Deep</h2>
+      <p class="sub">Inner mid x ≈ 240. Thin moon, big void.</p>
+      <div class="tile" id="c"></div>
+      <div class="sizes" id="c-sizes"></div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:14px">
+    <div class="panel"><h2>Deep inverse</h2><div class="tile" id="ci" style="background:#F5F5F5"></div></div>
+    <div class="panel"><h2>Deep at 24</h2><div style="display:flex;justify-content:center;padding:34px 0"><div class="s"><div class="b" id="c24" style="width:24px;height:24px"></div></div></div></div>
+    <div class="panel"><h2>Deep lockup</h2><div class="lockup"><div class="m" id="clock"></div><div class="w">up<span>croc</span></div></div></div>
+  </div>
+</div>
+<script>
+  const M = (c1x, c1y, c2x, c2y, dotX, dotR) => (bg, fg) => `
+  <svg viewBox="0 0 512 512" fill="none">
+    ${bg ? '<rect width="512" height="512" fill="' + bg + '"/>' : ''}
+    <g transform="rotate(-10 256 256)">
+      <path d="M438 146C338 108 104 164 104 258C104 352 300 408 378 370C${c1x} ${c1y} ${c2x} ${c2y} 438 146Z" fill="${fg}"/>
+      <circle cx="${dotX}" cy="256" r="${dotR}" fill="#4F8DFD"/>
+    </g>
+  </svg>`;
+
+  const A = M(342, 340, 330, 176, 404, 21);
+  const B = M(272, 332, 256, 180, 384, 21);
+  const C = M(230, 330, 214, 182, 382, 21);
+
+  document.getElementById('a').innerHTML = A('#000', '#F5F5F5');
+  document.getElementById('b').innerHTML = B('#000', '#F5F5F5');
+  document.getElementById('c').innerHTML = C('#000', '#F5F5F5');
+  document.getElementById('ci').innerHTML = C(null, '#0A0A0A');
+  document.getElementById('c24').innerHTML = C('#000', '#F5F5F5');
+  document.getElementById('clock').innerHTML = C(null, '#F5F5F5');
+
+  const list = [96, 64, 48, 32, 24];
+  ['a', 'b', 'c'].forEach(function (key) {
+    const fn = key === 'a' ? A : key === 'b' ? B : C;
+    document.getElementById(key + '-sizes').innerHTML = list.map(function (s) {
+      return '<div class="s"><div class="b" style="width:' + s + 'px;height:' + s + 'px">' + fn('#000', '#F5F5F5') + '</div><span>' + s + '</span></div>';
+    }).join('');
+  });
+</script>
+</body>
+</html>
