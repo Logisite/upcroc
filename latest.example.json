@@ -1,7 +1,7 @@
 {
-  "versionCode": 10203,
-  "versionName": "1.2.3",
-  "apkUrl": "https://github.com/Logisite/upcroc/releases/download/v1.2.3/app-direct-release.apk",
+  "versionCode": 10204,
+  "versionName": "1.2.4",
+  "apkUrl": "https://github.com/Logisite/upcroc/releases/download/v1.2.4/app-direct-release.apk",
   "sha256": "replace-with-the-apk-sha256",
   "changelog": "What changed in this build."
 }
