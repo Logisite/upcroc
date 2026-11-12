@@ -161,6 +161,7 @@ class PollingEngine(
                     engineState.putString(StateKeys.LAST_CHECK_GROUP, group.id)
                     val result = session.callTool(toolName, arguments)
                     requests++
+                    toolError(result)?.let { throw McpToolException(null, it) }
                     val rawJobs = parseJobs(result, clock.now())
                     val parsed = rawJobs
                         .filter { JobFilter.matches(it, config.filters) }
@@ -585,6 +586,19 @@ class PollingEngine(
             )
         }
         return posted
+    }
+
+    private fun toolError(element: JsonElement): String? {
+        val obj = element as? JsonObject ?: return null
+        val code = obj["error_code"]?.jsonPrimitive?.contentOrNull
+        val reason = obj["reason"]?.jsonPrimitive?.contentOrNull
+        val status = obj["status"]?.jsonPrimitive?.contentOrNull
+        if (code.isNullOrBlank() && reason.isNullOrBlank()) return null
+        return listOfNotNull(
+            code?.takeIf { it.isNotBlank() },
+            reason?.takeIf { it.isNotBlank() },
+            status?.takeIf { it.isNotBlank() && !it.equals("ok", ignoreCase = true) },
+        ).joinToString(": ").take(300)
     }
 
     private fun notifyable(job: Job, config: WatcherConfig, now: Long): Boolean {

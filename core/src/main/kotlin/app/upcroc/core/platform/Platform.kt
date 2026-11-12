@@ -76,6 +76,7 @@ interface Notifier {
 
 data class WatcherStatus(
     val running: Boolean = false,
+    val checking: Boolean = false,
     val lastCheckAt: Long? = null,
     val nextCheckAt: Long? = null,
     val lastTickAt: Long? = null,

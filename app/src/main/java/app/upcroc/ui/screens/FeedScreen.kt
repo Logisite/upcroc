@@ -20,8 +20,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -44,16 +46,22 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.upcroc.core.model.Job
 import app.upcroc.core.model.SearchMode
 import app.upcroc.permissions.Permissions
+import app.upcroc.runtime.CheckResult
 import app.upcroc.ui.MainViewModel
+import app.upcroc.ui.components.AppDialog
 import app.upcroc.ui.components.AppText
 import app.upcroc.ui.components.Avatar
 import app.upcroc.ui.components.Banner
 import app.upcroc.ui.components.BannerTone
+import app.upcroc.ui.components.DialogAction
 import app.upcroc.ui.components.DividerSoft
 import app.upcroc.ui.components.EmptyState
+import app.upcroc.ui.components.GhostButton
 import app.upcroc.ui.components.IconButton40
 import app.upcroc.ui.icons.IconGlyph
 import app.upcroc.ui.components.LiveDot
+import app.upcroc.ui.components.ModalSheet
+import app.upcroc.ui.components.PrimaryButton
 import app.upcroc.ui.components.SectionHeader
 import app.upcroc.ui.components.TopBar
 import app.upcroc.ui.components.pressable
@@ -62,6 +70,7 @@ import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 import app.upcroc.ui.util.Fmt
 import app.upcroc.ui.util.rememberNow
+import kotlinx.coroutines.delay
 
 /**
  * Alerts screen, ported from prototype/alerts.html + feed.css. Layout and copy
@@ -78,11 +87,14 @@ fun FeedScreen(
     val context = LocalContext.current
     val config by vm.config.collectAsStateWithLifecycle()
     val status by vm.status.collectAsStateWithLifecycle()
+    val lastResult by vm.lastResult.collectAsStateWithLifecycle()
     val snapshot by vm.snapshot.collectAsStateWithLifecycle()
     val jobs by vm.jobs.collectAsStateWithLifecycle()
     val auth by vm.authState.collectAsStateWithLifecycle()
     val now = rememberNow()
     var showAll by rememberSaveable { mutableStateOf(false) }
+    var notifyHelp by remember { mutableStateOf(false) }
+    var backgroundHelp by remember { mutableStateOf(false) }
     var permissionTick by remember { mutableIntStateOf(0) }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { permissionTick++ }
 
@@ -91,18 +103,55 @@ fun FeedScreen(
     val next = status.nextCheckAt ?: snapshot?.nextDueAt
     val countdown = when {
         !status.running -> "Paused"
+        status.checking -> "Checking"
         next == null || next <= 0L -> "Checking"
-        next <= now -> "Due now"
+        next <= now -> "Overdue"
         else -> Fmt.countdown(next - now)
     }
+    val heroHint = when {
+        !status.running -> "tap play to start · ${Fmt.plural(enabled.size, "search", "searches")}"
+        status.checking -> "talking to Upwork…"
+        lastResult != null -> "last check ${Fmt.lastSeen(lastResult?.at, now)} · ${resultShort(lastResult!!)}"
+        else -> "next check · ${Fmt.plural(enabled.size, "search", "searches")}"
+    }
+    val isOverdue = status.running && !status.checking && next != null && next > 0L && next <= now
+    var autoTriedAt by remember { mutableLongStateOf(0L) }
+    var seenResultAt by remember { mutableLongStateOf(lastResult?.at ?: 0L) }
+
+    LaunchedEffect(isOverdue, status.lastCheckAt) {
+        if (isOverdue && System.currentTimeMillis() - autoTriedAt > 30_000L) {
+            delay(1200)
+            autoTriedAt = System.currentTimeMillis()
+            vm.checkNow(context, announce = false, auto = true)
+        }
+    }
+    var wasSignedIn by remember { mutableStateOf(auth.signedIn) }
+    LaunchedEffect(auth.signedIn) {
+        if (auth.signedIn && !wasSignedIn) {
+            onToast("Connected to Upwork.")
+            vm.checkNow(context, announce = false, auto = true)
+        }
+        wasSignedIn = auth.signedIn
+    }
+
+    var notificationsWereOff by remember { mutableStateOf(!notificationsOn) }
+    LaunchedEffect(notificationsOn) {
+        if (notificationsWereOff && notificationsOn) onToast("Notifications are on.")
+        notificationsWereOff = !notificationsOn
+    }
+    LaunchedEffect(lastResult?.at) {
+        val result = lastResult ?: return@LaunchedEffect
+        if (result.at > seenResultAt) {
+            seenResultAt = result.at
+            if (result.source == "manual") onToast(resultText(result))
+        }
+    }
+
     val used = status.requestsToday.takeIf { it > 0 } ?: snapshot?.budget?.dayCount ?: 0
     val limit = config.budget.dailyLimit.coerceAtLeast(1)
     val maxGapSec = enabled.maxOfOrNull { it.intervalUpperSec } ?: 300
     val staleAfterMs = maxOf(maxGapSec * 2000L, 10 * 60_000L)
-    val lateMs = config.notifications.lateNotifySec * 1000L
-    val recentJobs = jobs.filter { job ->
-        job.saved || job.publishedAt <= 0L || (now - job.publishedAt) <= lateMs
-    }
+    val recentJobs = jobs
     val visibleJobs = if (showAll) recentJobs.take(50) else recentJobs.take(4)
 
     LazyColumn(
@@ -154,13 +203,10 @@ fun FeedScreen(
                         )
                         Spacer(Modifier.height(3.dp))
                         AppText(
-                            if (status.running) {
-                                "next check · ${Fmt.plural(enabled.size, "search", "searches")}"
-                            } else {
-                                "tap play to start · ${Fmt.plural(enabled.size, "search", "searches")}"
-                            },
+                            heroHint,
                             style = UpType.tiny.copy(fontSize = 9.5.sp),
                             color = Upcroc.Muted,
+                            maxLines = 2,
                         )
                     }
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -254,13 +300,13 @@ fun FeedScreen(
                     title = "Notifications are off",
                     body = "Checks still run, but Android will not show job alerts.",
                     action = "Fix",
-                    onAction = { Permissions.openNotificationSettings(context) },
+                    onAction = { notifyHelp = true },
                     tone = BannerTone.Danger,
                 )
             }
         }
         val lastCheck = status.lastCheckAt
-        if (status.running && lastCheck != null && now - lastCheck > staleAfterMs) {
+        if (status.running && lastCheck != null && lastCheck > 0L && now - lastCheck > staleAfterMs) {
             item {
                 Spacer(Modifier.height(10.dp))
                 Banner(
@@ -268,7 +314,7 @@ fun FeedScreen(
                     title = "Checks are delayed",
                     body = "Last check was ${Fmt.lastSeen(lastCheck, now)}. Android may be delaying background work.",
                     action = "Fix",
-                    onAction = { Permissions.openAppDetails(context) },
+                    onAction = { backgroundHelp = true },
                     tone = BannerTone.Warning,
                 )
             }
@@ -333,6 +379,21 @@ fun FeedScreen(
                 },
             )
             if (recentJobs.isEmpty()) {
+                val result = lastResult
+                val title = when {
+                    status.checking -> "Checking Upwork…"
+                    result == null -> "No alerts yet"
+                    result.status == "OK" && result.newJobs == 0 -> "No new matches"
+                    else -> "Nothing to show"
+                }
+                val body = when {
+                    status.checking -> "The check is still running."
+                    result == null -> "Start the watcher or tap Check now. New matches land here."
+                    result.status == "OK" -> {
+                        "Last check ${Fmt.lastSeen(result.at, now)}. ${resultText(result)}"
+                    }
+                    else -> resultText(result)
+                }
                 Box(
                     Modifier
                         .fillMaxWidth()
@@ -341,8 +402,8 @@ fun FeedScreen(
                 ) {
                     EmptyState(
                         icon = UiIcon.Radar,
-                        title = "No alerts yet",
-                        body = "Start the watcher or tap Check now. New matches land here.",
+                        title = title,
+                        body = body,
                     )
                 }
             } else {
@@ -358,7 +419,10 @@ fun FeedScreen(
                             job = job,
                             now = now,
                             onOpen = { onOpenJob(job.id) },
-                            onSave = { vm.setSaved(job.id, !job.saved) },
+                            onSave = {
+                                vm.setSaved(job.id, !job.saved)
+                                onToast(if (job.saved) "Removed" else "Saved")
+                            },
                         )
                         if (index < visibleJobs.lastIndex) DividerSoft()
                     }
@@ -463,6 +527,36 @@ private fun QuickAction(
     ) {
         IconGlyph(icon, Modifier.size(18.dp), Upcroc.Blue)
     }
+}
+
+private fun resultText(result: CheckResult): String = when (result.status) {
+    "AUTH" -> "Sign in to Upwork again."
+    "OFFLINE" -> "No network."
+    "NETWORK" -> result.message ?: "Network error."
+    "RATE_LIMIT" -> result.message ?: "Rate limited."
+    "BACKOFF" -> "Waiting before the next check."
+    "NO_DUE" -> "No check was needed."
+    "ERROR" -> result.message ?: "Check failed."
+    else -> when {
+        result.newJobs == 0 -> "No new matches."
+        result.notified > 0 -> "${result.newJobs} new · ${result.notified} notified."
+        else -> "${result.newJobs} found · none alerted."
+    }
+}
+
+private fun resultShort(result: CheckResult): String = when (result.status) {
+    "OK" -> when {
+        result.newJobs == 0 -> "0 new"
+        result.notified > 0 -> "${result.newJobs} new · ${result.notified} notified"
+        else -> "${result.newJobs} found"
+    }
+    "NO_DUE" -> "no check needed"
+    "AUTH" -> "sign in"
+    "OFFLINE" -> "offline"
+    "NETWORK" -> "network error"
+    "RATE_LIMIT" -> "rate limited"
+    "BACKOFF" -> "backing off"
+    else -> "check failed"
 }
 
 @Composable

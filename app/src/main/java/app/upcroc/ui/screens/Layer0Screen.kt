@@ -213,7 +213,7 @@ fun Layer0Screen(vm: MainViewModel, onBack: () -> Unit) {
         )
         Spacer(Modifier.height(6.dp))
         AppText(
-            "Jobs older than this are not shown or notified. Default is 10 minutes.",
+            "Jobs older than this are not notified. Default is 10 minutes.",
             style = UpType.small,
             color = Upcroc.Dim,
         )
@@ -250,7 +250,7 @@ fun Layer0Screen(vm: MainViewModel, onBack: () -> Unit) {
                 value = config.advanced.pageSize.toDouble(),
                 onValueChange = { value ->
                     vm.updateConfig {
-                        it.copy(advanced = it.advanced.copy(pageSize = (value ?: 20.0).toInt().coerceIn(1, 100)))
+                        it.copy(advanced = it.advanced.copy(pageSize = (value ?: 10.0).toInt().coerceIn(1, 10)))
                     }
                 },
                 modifier = Modifier.weight(1f),

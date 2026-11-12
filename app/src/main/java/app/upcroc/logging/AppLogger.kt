@@ -118,8 +118,8 @@ class AppLogger(context: Context) : Logger {
     }
 
     private companion object {
-        const val MAX_LINES = 1200
-        const val MAX_FILE_BYTES = 1_000_000L
+        const val MAX_LINES = 20_000
+        const val MAX_FILE_BYTES = 8_000_000L
         const val RETENTION_MS = 7L * 24 * 60 * 60 * 1000
     }
 }

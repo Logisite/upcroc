@@ -22,10 +22,12 @@ class WatcherScheduler(
     }
 
     fun scheduleWatchdog() {
+        logger.info("alarm: watchdog scheduled in 15m")
         setAlarm(System.currentTimeMillis() + WATCHDOG_MS, WatcherService.ACTION_WATCHDOG, REQ_WATCHDOG)
     }
 
     fun scheduleRestartSoon() {
+        logger.info("alarm: restart scheduled in 5s")
         setAlarm(System.currentTimeMillis() + 5_000L, WatcherService.ACTION_START, REQ_RESTART)
     }
 

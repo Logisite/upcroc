@@ -264,7 +264,7 @@ fun SettingsScreen(
                 )
                 SettingRow(
                     title = "Alert age",
-                    subtitle = "Ignore jobs older than this",
+                    subtitle = "Notifications only, jobs older than this",
                     value = "${config.notifications.lateNotifySec / 60} min",
                     onClick = {
                         alertAgeText = (config.notifications.lateNotifySec / 60).toString()

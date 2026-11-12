@@ -9,9 +9,11 @@ import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.content.ContextCompat
 import app.upcroc.UpcrocApp
+import app.upcroc.core.engine.RunStatus
 import app.upcroc.core.engine.StateKeys
 import app.upcroc.core.platform.WatcherStatus
 import app.upcroc.notify.NotificationChannels
+import app.upcroc.runtime.CheckResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 import java.util.concurrent.atomic.AtomicBoolean
 
 class WatcherService : Service() {
@@ -71,7 +74,7 @@ class WatcherService : Service() {
                         val last = container.engineState.long(StateKeys.LAST_TICK)
                         if (System.currentTimeMillis() - last > STALE_MS) {
                             container.logger.warn("service: watchdog found stale engine; checking")
-                            runCheck(force = false)
+                            runCheck(force = false, source = "watchdog")
                         } else {
                             container.logger.info("service: watchdog healthy")
                             container.scheduler.scheduleWatchdog()
@@ -85,16 +88,30 @@ class WatcherService : Service() {
                         container.scheduler.scheduleWatchdog()
                     }
                     BackstopScheduler.schedule(this@WatcherService)
-                    container.logger.info("service: starting check force=${action == ACTION_START || action == ACTION_CHECK_NOW}")
-                    runCheck(force = action == ACTION_START || action == ACTION_CHECK_NOW)
+                    val source = when (action) {
+                        ACTION_CHECK_NOW -> {
+                            if (intent?.getBooleanExtra(EXTRA_AUTO, false) == true) "auto" else "manual"
+                        }
+                        ACTION_START -> "manual"
+                        ACTION_WATCHDOG -> "watchdog"
+                        ACTION_ENSURE -> "ensure"
+                        ACTION_RESTART -> "restart"
+                        else -> "scheduled"
+                    }
+                    runCheck(force = action == ACTION_START || action == ACTION_CHECK_NOW, source = source)
                 }
             }
         }
         return START_STICKY
     }
 
-    private suspend fun runCheck(force: Boolean) {
-        if (!checking.compareAndSet(false, true)) return
+    private suspend fun runCheck(force: Boolean, source: String) {
+        if (!checking.compareAndSet(false, true)) {
+            container.logger.warn("service: check skipped; another check is running")
+            return
+        }
+        container.logger.info("service: check starting source=$source force=$force")
+        container.runtime.setChecking(true)
         val wake = runCatching {
             getSystemService(PowerManager::class.java)
                 .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "upcroc:check")
@@ -104,14 +121,17 @@ class WatcherService : Service() {
                 }
         }.getOrNull()
         try {
-            container.engine.resumePendingNotifications()
-            val result = container.engine.runDue(force = force)
+            val result = withTimeout(CHECK_TIMEOUT_MS) {
+                container.engine.resumePendingNotifications()
+                container.engine.runDue(force = force)
+            }
             val snapshot = container.engine.snapshot()
             val now = System.currentTimeMillis()
             container.engineState.putLong(StateKeys.LAST_TICK, now)
             val status = WatcherStatus(
                 running = true,
-                lastCheckAt = snapshot.lastCheckAt,
+                checking = false,
+                lastCheckAt = snapshot.lastCheckAt.takeIf { it > 0L },
                 nextCheckAt = result.nextDueAt,
                 lastTickAt = now,
                 failures = snapshot.failures,
@@ -130,13 +150,53 @@ class WatcherService : Service() {
                 retentionDays = config.storage.retentionDays,
                 statsRetentionDays = config.storage.statsRetentionDays,
             )
+            if (result.status != RunStatus.NO_DUE) {
+                container.runtime.publishResult(
+                    CheckResult(
+                        at = now,
+                        source = source,
+                        status = result.status.name,
+                        requests = result.requests,
+                        newJobs = result.newJobs,
+                        notified = result.notified,
+                        message = result.message,
+                    ),
+                )
+            }
             container.logger.info(
-                "service: check done status=${result.status} dueAt=${result.nextDueAt} " +
+                "service: check done source=$source status=${result.status} dueAt=${result.nextDueAt} " +
                     "requests=${result.requests} new=${result.newJobs} notified=${result.notified}" +
                     (result.message?.let { " msg=$it" } ?: "")
             )
+        } catch (e: Exception) {
+            val now = System.currentTimeMillis()
+            val next = now + 60_000L
+            container.logger.error("service: check failed source=$source", e)
+            container.runtime.updateStatus {
+                it.copy(
+                    checking = false,
+                    lastTickAt = now,
+                    nextCheckAt = next,
+                    failures = it.failures + 1,
+                    lastError = e.message ?: e::class.java.simpleName,
+                )
+            }
+            container.scheduler.scheduleNext(next)
+            runCatching { container.notifier.postStatus(container.runtime.status.value) }
+            container.runtime.publishResult(
+                CheckResult(
+                    at = now,
+                    source = source,
+                    status = "ERROR",
+                    requests = 0,
+                    newJobs = 0,
+                    notified = 0,
+                    message = e.message ?: e::class.java.simpleName,
+                ),
+            )
         } finally {
             runCatching { if (wake?.isHeld == true) wake.release() }
+            container.runtime.setChecking(false)
             checking.set(false)
         }
     }
@@ -229,11 +289,13 @@ class WatcherService : Service() {
         const val ACTION_WATCHDOG = "app.upcroc.action.WATCHDOG"
         const val ACTION_RESTART = "app.upcroc.action.RESTART"
         const val ACTION_ENSURE = "app.upcroc.action.ENSURE"
+        const val EXTRA_AUTO = "app.upcroc.extra.AUTO"
 
         private const val NOTIFICATION_ID = 1000
         private const val HEARTBEAT_MS = 60_000L
         private const val STALE_MS = 5 * 60_000L
         private const val CHECK_WAKE_MS = 120_000L
+        private const val CHECK_TIMEOUT_MS = 90_000L
 
         fun start(context: Context) {
             ContextCompat.startForegroundService(
@@ -254,10 +316,12 @@ class WatcherService : Service() {
             context.startService(Intent(context, WatcherService::class.java).setAction(ACTION_STOP))
         }
 
-        fun checkNow(context: Context) {
+        fun checkNow(context: Context, auto: Boolean = false) {
             ContextCompat.startForegroundService(
                 context,
-                Intent(context, WatcherService::class.java).setAction(ACTION_CHECK_NOW),
+                Intent(context, WatcherService::class.java)
+                    .setAction(ACTION_CHECK_NOW)
+                    .putExtra(EXTRA_AUTO, auto),
             )
         }
     }

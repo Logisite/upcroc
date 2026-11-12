@@ -96,6 +96,7 @@ fun DiagnosticsScreen(
     val context = LocalContext.current
     val config by vm.config.collectAsStateWithLifecycle()
     val status by vm.status.collectAsStateWithLifecycle()
+    val lastResult by vm.lastResult.collectAsStateWithLifecycle()
     val snapshot by vm.snapshot.collectAsStateWithLifecycle()
     val checks by vm.recentChecks.collectAsStateWithLifecycle()
     val alerts by vm.recentAlerts.collectAsStateWithLifecycle()
@@ -131,10 +132,18 @@ fun DiagnosticsScreen(
 
     val nextAt = status.nextCheckAt ?: snapshot?.nextDueAt
     val nextLine = when {
+        status.checking -> "Checking Upwork…"
         !status.running -> "Paused"
         nextAt == null || nextAt <= 0L -> "Watching · next check pending"
-        nextAt <= now -> "Watching · checking now"
+        nextAt <= now -> "Overdue · waiting for Android"
         else -> "Watching · next check in ${Fmt.countdown(nextAt - now)}"
+    }
+    val resultLine = lastResult?.let { result ->
+        if (result.status == "OK") {
+            "${result.newJobs} new · ${result.notified} notified"
+        } else {
+            result.status.lowercase() + (result.message?.let { " · $it" } ?: "")
+        }
     }
     val enabled = config.searches.count { it.enabled }
     val limit = config.budget.dailyLimit
@@ -194,6 +203,14 @@ fun DiagnosticsScreen(
                         color = Upcroc.Muted,
                         maxLines = 1,
                     )
+                    if (resultLine != null) {
+                        AppText(
+                            "last result · $resultLine",
+                            style = UpType.tiny,
+                            color = Upcroc.Dim,
+                            maxLines = 1,
+                        )
+                    }
                     Spacer(Modifier.height(13.dp))
                     Box(
                         Modifier

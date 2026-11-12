@@ -98,7 +98,7 @@ data class AdvancedConfig(
     val updateCheckEnabled: Boolean = true,
     val updateManifestUrl: String = "",
     val pageParam: String = "",
-    val pageSize: Int = 20,
+    val pageSize: Int = 10,
     val pageCap: Int = 3,
     val paceMs: Long = 150L,
     val resumeCheckWithinSec: Int = 600,
@@ -148,7 +148,7 @@ data class WatcherConfig(
             errors += "Late-notify window must be at least the fresh window."
         }
         if (storage.retentionDays < 1) errors += "Retention must be at least one day."
-        if (advanced.pageSize !in 1..100) errors += "Page size must be 1..100."
+        if (advanced.pageSize !in 1..10) errors += "Page size must be 1..10."
         return errors
     }
 
@@ -184,7 +184,7 @@ data class WatcherConfig(
             maxJobs = storage.maxJobs.coerceIn(100, 100_000),
         ),
         advanced = advanced.copy(
-            pageSize = advanced.pageSize.coerceIn(1, 100),
+            pageSize = advanced.pageSize.coerceIn(1, 10),
             pageCap = advanced.pageCap.coerceIn(1, 50),
             paceMs = advanced.paceMs.coerceIn(0, 5_000),
             resumeCheckWithinSec = advanced.resumeCheckWithinSec.coerceIn(0, 86_400),

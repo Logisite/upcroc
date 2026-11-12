@@ -21,7 +21,7 @@ object SearchParams {
         page: Int = 0,
     ): JsonObject {
         val params = buildJsonObject {
-            put("limit", advanced.pageSize)
+            put("limit", advanced.pageSize.coerceIn(1, 10))
             when (group.mode) {
                 SearchMode.SMART_SEARCH -> {
                     put("mode", "most_recent")

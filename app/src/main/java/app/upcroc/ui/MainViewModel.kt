@@ -18,6 +18,7 @@ import app.upcroc.data.db.toModel
 import app.upcroc.data.prefs.UiState
 import app.upcroc.di.AppContainer
 import app.upcroc.logging.LogLine
+import app.upcroc.runtime.CheckResult
 import app.upcroc.service.WatcherService
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +60,7 @@ class MainViewModel(private val container: AppContainer) : ViewModel() {
     val running = container.runtime.running
     val status = container.runtime.status
     val updateState = container.updateManager.state
+    val lastResult: StateFlow<CheckResult?> = container.runtime.lastResult
 
     val jobs: StateFlow<List<Job>> = container.db.jobDao().observeFeed(500)
         .map { list -> list.map { it.toModel() } }
@@ -252,11 +254,11 @@ class MainViewModel(private val container: AppContainer) : ViewModel() {
         }
     }
 
-    fun checkNow(context: Context) {
+    fun checkNow(context: Context, announce: Boolean = true, auto: Boolean = false) {
         viewModelScope.launch {
             container.settings.setRunning(true)
-            WatcherService.checkNow(context.applicationContext)
-            emit("Checking now…")
+            WatcherService.checkNow(context.applicationContext, auto = auto)
+            if (announce) emit("Checking now…")
         }
     }
 
