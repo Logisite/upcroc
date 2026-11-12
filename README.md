@@ -2,7 +2,7 @@
 
 Android-only Upwork job watcher. Kotlin, Compose, Room, OkHttp. Read-only: it never applies to jobs or changes anything on Upwork.
 
-Package: `app.upcroc` · License: WTFPL-2.0 · minSdk 26 · targetSdk 36 · compileSdk 37
+Package: `app.upcroc` · License: GPL-3.0 · minSdk 26 · targetSdk 36 · compileSdk 37
 
 Repo: <https://github.com/Logisite/upcroc>
 
@@ -97,7 +97,7 @@ The repository is public, so release assets are publicly downloadable. If it eve
 
 ## Releases
 
-GitHub Actions builds a debug APK for every push and a signed release on tags that start with `v`.
+GitHub Actions does not run on push. Releases are manual: open Actions → Android → Run workflow, choose whether it is a release, and provide the tag and changelog. A normal run builds and uploads a debug APK only.
 
 Required repository secrets for a release:
 
@@ -115,15 +115,7 @@ keyAlias=upcroc
 keyPassword=...
 ```
 
-Then:
-
-```sh
-./gradlew :app:assembleDirectRelease
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-The tag workflow builds `app-direct-release.apk`, writes `latest.json` with the real version, SHA-256 and download URL, and publishes both assets on the latest GitHub release.
+Then run the manual release workflow with `release = true` and a tag such as `v0.1.0`. It builds `app-direct-release.apk`, writes `latest.json` with the real version, SHA-256 and download URL, and publishes both assets on the latest GitHub release.
 
 ## Known limits
 
