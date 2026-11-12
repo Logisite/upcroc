@@ -57,6 +57,7 @@ import app.upcroc.ui.components.IconButton40
 import app.upcroc.ui.components.InfoDialog
 import app.upcroc.ui.components.ModalSheet
 import app.upcroc.ui.components.PrimaryButton
+import app.upcroc.ui.components.Segmented
 import app.upcroc.ui.components.SettingRow
 import app.upcroc.ui.components.StatusChip
 import app.upcroc.ui.components.StatusTone
@@ -86,6 +87,7 @@ fun SettingsScreen(
     val context = LocalContext.current
     val config by vm.config.collectAsStateWithLifecycle()
     val auth by vm.authState.collectAsStateWithLifecycle()
+    val uiState by vm.uiState.collectAsStateWithLifecycle()
     val running by vm.running.collectAsStateWithLifecycle()
     val toast = rememberToastState()
 
@@ -103,6 +105,7 @@ fun SettingsScreen(
     var alertAgeOpen by remember { mutableStateOf(false) }
     var alertAgeText by remember { mutableStateOf("") }
     var backgroundOpen by remember { mutableStateOf(false) }
+    var textSizeOpen by remember { mutableStateOf(false) }
 
     val notificationLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -292,6 +295,12 @@ fun SettingsScreen(
 
             SettingsGroup("System") {
                 SettingRow(
+                    title = "Text size",
+                    subtitle = "Applies across the whole app",
+                    value = textScaleLabels[textScaleIndex(uiState.fontScale)],
+                    onClick = { textSizeOpen = true },
+                )
+                SettingRow(
                     title = "Diagnostics",
                     subtitle = "Live status, logs, quota",
                     onClick = onDiagnostics,
@@ -464,6 +473,47 @@ fun SettingsScreen(
         )
     }
 
+    ModalSheet(visible = textSizeOpen, onDismiss = { textSizeOpen = false }) {
+        AppText("Text size", style = UpType.section, color = Upcroc.Text)
+        Spacer(Modifier.height(4.dp))
+        AppText(
+            "Changes every screen. Default matches the designed size.",
+            style = UpType.muted,
+            color = Upcroc.Muted,
+        )
+        Spacer(Modifier.height(14.dp))
+        Segmented(
+            options = textScaleLabels,
+            selected = textScaleIndex(uiState.fontScale),
+            onSelect = { index ->
+                vm.updateUiState { it.copy(fontScale = textScales[index]) }
+            },
+        )
+        Spacer(Modifier.height(16.dp))
+        AppText(
+            "Preview",
+            style = UpType.tiny.copy(fontWeight = FontWeight.W700),
+            color = Upcroc.Dim,
+        )
+        Spacer(Modifier.height(4.dp))
+        AppText(
+            "Senior AI Automation Engineer",
+            style = UpType.groupTitle,
+            color = Upcroc.Text,
+        )
+        AppText(
+            "Upwork job alerts, readable at a glance.",
+            style = UpType.body,
+            color = Upcroc.Muted,
+        )
+        Spacer(Modifier.height(16.dp))
+        PrimaryButton(
+            "Done",
+            onClick = { textSizeOpen = false },
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+
     ModalSheet(visible = backgroundOpen, onDismiss = { backgroundOpen = false }) {
         AppText("Background reliability", style = UpType.section, color = Upcroc.Text)
         Spacer(Modifier.height(6.dp))
@@ -557,6 +607,14 @@ private fun SettingsGroup(label: String, content: @Composable () -> Unit) {
             content()
         }
     }
+}
+
+private val textScales = listOf(0.9f, 1f, 1.1f, 1.2f, 1.3f)
+private val textScaleLabels = listOf("Small", "Default", "Large", "XL", "XXL")
+
+private fun textScaleIndex(value: Float): Int {
+    val found = textScales.indexOfFirst { kotlin.math.abs(it - value) < 0.01f }
+    return if (found >= 0) found else 1
 }
 
 private fun soundName(context: Context, uri: String?): String {

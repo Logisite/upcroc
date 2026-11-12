@@ -30,6 +30,7 @@ data class UiState(
     val feedAnchorJobId: String? = null,
     val feedAnchorOffset: Int = 0,
     val selectedJobId: String? = null,
+    val fontScale: Float = 1f,
 )
 
 class SettingsRepository(private val context: Context) {

@@ -25,3 +25,7 @@
 # Room
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
+
+# WorkManager instantiates workers by reflection.
+-keep class app.upcroc.service.BackstopWorker { <init>(...); }
+-keep class app.upcroc.service.OneTimeCheckWorker { <init>(...); }
