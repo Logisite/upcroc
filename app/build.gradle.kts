@@ -30,8 +30,8 @@ android {
         applicationId = "app.upcroc"
         minSdk = 26
         targetSdk = 36
-        versionCode = 10204
-        versionName = "1.2.4"
+        versionCode = 10206
+        versionName = "1.2.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -146,6 +146,7 @@ dependencies {
 
     implementation(libs.haze)
     implementation(libs.haze.blur)
+    implementation(libs.haze.glass)
 
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)

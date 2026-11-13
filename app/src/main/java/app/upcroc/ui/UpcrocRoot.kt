@@ -1,6 +1,7 @@
 package app.upcroc.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,8 +19,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,14 +52,20 @@ import app.upcroc.ui.screens.SearchScreen
 import app.upcroc.ui.screens.SettingsScreen
 import app.upcroc.ui.screens.SplashHold
 import app.upcroc.ui.screens.SplashScreen
-import app.upcroc.ui.theme.LocalAppFontScale
-import app.upcroc.ui.theme.LocalBaseFontScale
+import app.upcroc.ui.theme.GoogleSansFlex
+import app.upcroc.ui.theme.LocalFontFamily
+import app.upcroc.ui.theme.LocalFontScaleFactor
+import app.upcroc.ui.theme.LocalMainWeight
+import app.upcroc.ui.theme.LocalSubWeight
+import app.upcroc.ui.theme.Manrope
+import app.upcroc.ui.theme.Roboto
 import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 import app.upcroc.update.UpdateInfo
 import app.upcroc.update.UpdateState
 import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
+import kotlin.math.abs
 
 object Routes {
     const val FEED = "feed"
@@ -80,11 +90,19 @@ fun UpcrocRoot(container: AppContainer) {
     val density = LocalDensity.current
     val baseFontScale = density.fontScale
     val appFontScale = uiState.fontScale
-    val fontScale = (baseFontScale * appFontScale).coerceIn(0.85f, 1.6f)
+    val fontScale = (baseFontScale * appFontScale).coerceIn(0.8f, 1.6f)
+    val fontFamily = when (uiState.fontChoice) {
+        "manrope" -> Manrope
+        "roboto" -> Roboto
+        "system" -> FontFamily.Default
+        else -> GoogleSansFlex
+    }
 
     CompositionLocalProvider(
-        LocalAppFontScale provides appFontScale,
-        LocalBaseFontScale provides baseFontScale,
+        LocalFontScaleFactor provides fontScale,
+        LocalFontFamily provides fontFamily,
+        LocalMainWeight provides FontWeight(uiState.mainWeight.coerceIn(100, 900)),
+        LocalSubWeight provides FontWeight(uiState.subWeight.coerceIn(100, 900)),
         LocalDensity provides Density(density = density.density, fontScale = fontScale),
     ) {
         when {
@@ -134,10 +152,37 @@ private fun MainShell(vm: MainViewModel, uiState: UiState) {
     }
 
     Box(Modifier.fillMaxSize().background(Upcroc.Ink)) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .hazeSource(haze)
+                .background(Upcroc.Ink)
+                .then(
+                    if (route != null && route in mainRoutes) {
+                        Modifier.pointerInput(route) {
+                            val threshold = 64.dp.toPx()
+                            var drag = 0f
+                            detectHorizontalDragGestures(
+                                onDragStart = { drag = 0f },
+                                onHorizontalDrag = { _, amount -> drag += amount },
+                                onDragEnd = {
+                                    if (abs(drag) > threshold) {
+                                        val next = (tabIndex + if (drag < 0f) 1 else -1)
+                                            .coerceIn(0, mainRoutes.lastIndex)
+                                        if (next != tabIndex) navigateTab(nav, mainRoutes[next])
+                                    }
+                                },
+                            )
+                        }
+                    } else {
+                        Modifier
+                    },
+                ),
+        ) {
         NavHost(
             navController = nav,
             startDestination = start,
-            modifier = Modifier.fillMaxSize().hazeSource(haze),
+            modifier = Modifier.fillMaxSize(),
         ) {
             composable(Routes.FEED) {
                 FeedScreen(
@@ -173,6 +218,7 @@ private fun MainShell(vm: MainViewModel, uiState: UiState) {
                 val id = entry.arguments?.getString("id").orEmpty()
                 JobDetailScreen(vm = vm, jobId = id, onBack = { nav.popBackStack() })
             }
+        }
         }
 
         if (showDock) {

@@ -19,6 +19,7 @@ data class GroupRuntime(
 object StateKeys {
     const val LAST_CHECK = "last_check"
     const val LAST_TICK = "last_tick"
+    const val LAST_ATTEMPT = "last_attempt"
     const val NEXT_CHECK = "next_check"
     const val BACKOFF_LEVEL = "backoff_level"
     const val BACKOFF_UNTIL = "backoff_until"

@@ -16,8 +16,10 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import app.upcroc.ui.components.drawCrescentMark
 import app.upcroc.ui.theme.Upcroc
 import kotlin.math.PI
 import kotlin.math.cos
@@ -122,13 +124,10 @@ private inline fun DrawScope.fillPath(tint: Color, evenOdd: Boolean = false, blo
 private fun DrawScope.drawToolIcon(icon: UiIcon, tint: Color, w: Float) {
     when (icon) {
         UiIcon.Radar -> {
-            circle(tint, w, 12f, 12f, 8f)
-            circle(tint, w, 12f, 12f, 4.2f)
-            dot(tint, 12f, 12f, 1.3f)
-            line(tint, w, 12f, 4f, 12f, 2f)
-            line(tint, w, 12f, 22f, 12f, 20f)
-            line(tint, w, 4f, 12f, 2f, 12f)
-            line(tint, w, 22f, 12f, 20f, 12f)
+            // The Upcroc mark, enlarged so its visual height matches the icon set.
+            scale(1.3f) {
+                drawCrescentMark(tint = tint, ballColor = tint)
+            }
         }
         UiIcon.Search -> {
             circle(tint, w, 10.8f, 10.8f, 6.3f)

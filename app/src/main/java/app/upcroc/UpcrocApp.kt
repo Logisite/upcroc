@@ -9,6 +9,9 @@ class UpcrocApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.DEBUG) {
+            dev.chrisbanes.haze.HazeLogger.enabled = true
+        }
         container = AppContainer(this)
         container.start()
     }

@@ -31,6 +31,9 @@ data class UiState(
     val feedAnchorOffset: Int = 0,
     val selectedJobId: String? = null,
     val fontScale: Float = 1f,
+    val fontChoice: String = "manrope",
+    val mainWeight: Int = 600,
+    val subWeight: Int = 400,
 )
 
 class SettingsRepository(private val context: Context) {

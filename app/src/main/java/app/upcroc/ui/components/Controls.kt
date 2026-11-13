@@ -15,13 +15,16 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -216,36 +219,44 @@ fun Segmented(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
             .height(42.dp)
             .clip(CircleShape)
             .background(Color(0xFF1C1C1C))
             .padding(3.dp),
-        verticalAlignment = Alignment.CenterVertically,
     ) {
-        options.forEachIndexed { index, label ->
-            val active = index == selected
-            val bg by animateColorAsState(
-                if (active) Upcroc.Text else Color.Transparent,
-                tween(180),
-                label = "seg",
-            )
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clip(CircleShape)
-                    .background(bg)
-                    .pressable(onClick = { onSelect(index) }),
-                contentAlignment = Alignment.Center,
-            ) {
-                AppText(
-                    label,
-                    style = UpType.caption.copy(fontWeight = FontWeight.W700),
-                    color = if (active) Upcroc.Surface else Upcroc.Muted,
-                )
+        val capsuleWidth = maxWidth / options.size.toFloat()
+        val offsetX by animateDpAsState(
+            capsuleWidth * selected.coerceIn(0, options.lastIndex).toFloat(),
+            tween(220, easing = androidx.compose.animation.core.FastOutSlowInEasing),
+            label = "segment capsule",
+        )
+        Box(
+            Modifier
+                .offset(x = offsetX)
+                .width(capsuleWidth)
+                .fillMaxHeight()
+                .clip(CircleShape)
+                .background(Upcroc.Text)
+        )
+        Row(Modifier.fillMaxSize()) {
+            options.forEachIndexed { index, label ->
+                val active = index == selected
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .pressable(onClick = { onSelect(index) }),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    AppText(
+                        label,
+                        style = UpType.caption.copy(fontWeight = FontWeight.W700),
+                        color = if (active) Upcroc.Surface else Upcroc.Muted,
+                    )
+                }
             }
         }
     }

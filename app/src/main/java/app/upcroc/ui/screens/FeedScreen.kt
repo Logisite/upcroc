@@ -39,7 +39,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -188,23 +187,20 @@ fun FeedScreen(
                     Column(Modifier.weight(1f)) {
                         AppText(
                             (if (status.running) "Watching" else "Paused").uppercase(),
-                            style = UpType.tiny.copy(
-                                fontWeight = FontWeight.W700,
-                                letterSpacing = 0.9.sp,
-                            ),
+                            style = UpType.pageKicker,
                             color = Upcroc.Dim,
                         )
                         Spacer(Modifier.height(3.dp))
                         AppText(
                             countdown,
-                            style = UpType.heroBig.copy(fontSize = 36.sp, lineHeight = 37.sp),
+                            style = UpType.heroBig,
                             color = Upcroc.Text,
                             maxLines = 1,
                         )
                         Spacer(Modifier.height(3.dp))
                         AppText(
                             heroHint,
-                            style = UpType.tiny.copy(fontSize = 11.sp),
+                            style = UpType.small,
                             color = Upcroc.Muted,
                             maxLines = 2,
                         )
@@ -229,7 +225,7 @@ fun FeedScreen(
                         Spacer(Modifier.height(4.dp))
                         AppText(
                             "Check now",
-                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
+                            style = UpType.caption.copy(fontWeight = FontWeight.W600),
                             color = Upcroc.Muted,
                         )
                     }
@@ -244,7 +240,7 @@ fun FeedScreen(
                     ) {
                         AppText(
                             "Quota $used / $limit",
-                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
+                            style = UpType.statusChip,
                             color = Upcroc.Muted,
                         )
                     }
@@ -271,7 +267,7 @@ fun FeedScreen(
                         )
                         AppText(
                             if (status.running) "Live" else "Off",
-                            style = UpType.tiny.copy(fontSize = 10.sp, fontWeight = FontWeight.W600),
+                            style = UpType.statusChip,
                             color = Upcroc.Muted,
                         )
                     }
@@ -479,13 +475,13 @@ private fun SearchCard(
         Column(Modifier.padding(start = 14.dp, end = 14.dp, top = 13.dp)) {
             AppText(
                 label.uppercase(),
-                style = UpType.tiny.copy(fontWeight = FontWeight.W600, letterSpacing = 0.7.sp, fontSize = 10.5.sp),
+                style = UpType.label,
                 color = Color.White.copy(alpha = 0.7f),
             )
             Spacer(Modifier.height(5.dp))
             AppText(
                 name,
-                style = UpType.groupTitle.copy(fontWeight = FontWeight.W700, fontSize = 14.sp),
+                style = UpType.cardTitle.copy(fontWeight = FontWeight.W700),
                 color = Color.White,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -493,7 +489,7 @@ private fun SearchCard(
             Spacer(Modifier.height(4.dp))
             AppText(
                 meta,
-                style = UpType.tiny.copy(fontSize = 11.sp),
+                style = UpType.tiny,
                 color = Color.White.copy(alpha = 0.7f),
                 maxLines = 1,
             )
@@ -575,7 +571,7 @@ private fun JobRow(
         Column(Modifier.weight(1f)) {
             AppText(
                 job.title.ifBlank { "Untitled job" },
-                style = UpType.bodyStrong.copy(fontWeight = FontWeight.W700, fontSize = 12.sp),
+                style = UpType.rowTitle,
                 color = Upcroc.Text,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -586,7 +582,7 @@ private fun JobRow(
                     job.budget.ifBlank { "Budget not listed" },
                     job.country.ifBlank { "Anywhere" },
                 ).joinToString(" · "),
-                style = UpType.tiny.copy(fontSize = 11.sp),
+                style = UpType.small,
                 color = Upcroc.Dim,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -595,21 +591,21 @@ private fun JobRow(
         Column(horizontalAlignment = Alignment.End) {
             AppText(
                 Fmt.ageShort(job.publishedAt, now),
-                style = UpType.caption.copy(fontWeight = FontWeight.W800, fontSize = 11.5.sp),
+                style = UpType.caption.copy(fontWeight = FontWeight.W600),
                 color = Upcroc.Text,
                 maxLines = 1,
             )
             Spacer(Modifier.height(1.dp))
             AppText(
                 job.experienceLevel.ifBlank { job.jobType.ifBlank { "New" } },
-                style = UpType.tiny.copy(fontSize = 9.5.sp),
+                style = UpType.tiny,
                 color = Upcroc.Dim,
                 maxLines = 1,
             )
             job.invitesSent?.takeIf { it > 0 }?.let { invites ->
                 AppText(
                     "$invites invite${if (invites == 1) "" else "s"}",
-                    style = UpType.tiny.copy(fontSize = 9.5.sp, fontWeight = FontWeight.W700),
+                    style = UpType.tiny.copy(fontWeight = FontWeight.W700),
                     color = Upcroc.Blue,
                     maxLines = 1,
                 )

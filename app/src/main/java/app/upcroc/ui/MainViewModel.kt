@@ -2,9 +2,12 @@ package app.upcroc.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import app.upcroc.backup.BackupOptions
+import app.upcroc.backup.RestoreOptions
 import app.upcroc.core.config.WatcherConfig
 import app.upcroc.core.engine.EngineSnapshot
 import app.upcroc.core.metrics.LatencyStats
@@ -243,7 +246,11 @@ class MainViewModel(private val container: AppContainer) : ViewModel() {
         viewModelScope.launch {
             container.settings.setRunning(true)
             WatcherService.start(context.applicationContext)
-            emit("Watcher started.")
+            if (!container.scheduler.canScheduleExact()) {
+                emit("Started. Allow “Alarms & reminders” in Settings so checks stay on time.")
+            } else {
+                emit("Watcher started.")
+            }
         }
     }
 
@@ -334,6 +341,43 @@ class MainViewModel(private val container: AppContainer) : ViewModel() {
     fun clearLogs() {
         container.logger.clear()
         emit("Logs cleared.")
+    }
+
+    fun createBackup(uri: Uri, password: String, options: BackupOptions) {
+        if (password.length < 8) {
+            emit("Use at least 8 characters for the backup password.")
+            return
+        }
+        viewModelScope.launch {
+            try {
+                container.backupManager.create(uri, password.toCharArray(), options)
+                emit("Backup saved.")
+            } catch (e: Exception) {
+                container.logger.error("backup failed", e)
+                emit("Backup failed: ${e.message ?: "could not write the file."}")
+            }
+        }
+    }
+
+    fun restoreBackup(uri: Uri, password: String, options: RestoreOptions) {
+        if (password.isBlank()) {
+            emit("Enter the backup password.")
+            return
+        }
+        viewModelScope.launch {
+            try {
+                container.backupManager.restore(uri, password.toCharArray(), options)
+                emit("Backup restored.")
+            } catch (e: Exception) {
+                container.logger.error("restore failed", e)
+                emit(
+                    when (e.message?.startsWith("That password") == true) {
+                        true -> e.message ?: "Wrong password."
+                        false -> "Restore failed: ${e.message ?: "could not read the backup."}"
+                    },
+                )
+            }
+        }
     }
 
     fun checkForUpdates(force: Boolean = false) {

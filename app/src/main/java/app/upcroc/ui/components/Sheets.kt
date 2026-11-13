@@ -47,8 +47,8 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import app.upcroc.ui.theme.LocalAppFontScale
-import app.upcroc.ui.theme.LocalBaseFontScale
+import app.upcroc.ui.theme.LocalFontFamily
+import app.upcroc.ui.theme.LocalFontScaleFactor
 import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 
@@ -171,9 +171,11 @@ fun AppDialog(
 @Composable
 private fun DialogTextScale(content: @Composable () -> Unit) {
     val density = LocalDensity.current
-    val scale = LocalBaseFontScale.current * LocalAppFontScale.current
+    val family = LocalFontFamily.current
+    val scale = LocalFontScaleFactor.current
     CompositionLocalProvider(
         LocalDensity provides Density(density = density.density, fontScale = scale),
+        LocalFontFamily provides family,
         content = content,
     )
 }

@@ -84,7 +84,7 @@ object Fmt {
     fun durationMs(ms: Long): String = if (ms < 1000) "${ms} ms" else "${ms / 1000}s"
 
     fun money(value: Double?): String {
-        if (value == null) return "—"
+        if (value == null) return "-"
         return when {
             value >= 1_000_000 -> "$" + trim(value / 1_000_000) + "m"
             value >= 1_000 -> "$" + trim(value / 1_000) + "k"
@@ -93,7 +93,7 @@ object Fmt {
     }
 
     fun moneyFull(value: Double?): String {
-        if (value == null) return "—"
+        if (value == null) return "-"
         val rounded = kotlin.math.round(value)
         return if (rounded == value) "$${rounded.toLong()}" else "$${String.format(Locale.US, "%.2f", value)}"
     }

@@ -47,8 +47,10 @@ class WatcherService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val action = intent?.action
-        container.logger.info("service: action=${action ?: "null"}")
+        // A START_STICKY restart arrives with a null intent; treat it as an
+        // ensure so the heartbeat and alarm come back instead of going quiet.
+        val action = intent?.action ?: ACTION_ENSURE
+        container.logger.info("service: action=$action")
         when (action) {
             ACTION_STOP -> stopEverything()
             ACTION_START, ACTION_CHECK, ACTION_CHECK_NOW, ACTION_ENSURE, ACTION_WATCHDOG, ACTION_RESTART -> {
@@ -66,14 +68,33 @@ class WatcherService : Service() {
                         userRunning = true
                     }
 
+                    // Nothing to poll without an Upwork session. Starting checks
+                    // here only produced AUTH failures on boot every 30 minutes.
+                    if (!container.auth.hasToken()) {
+                        container.logger.info("service: no account; stopping instead of checking")
+                        container.settings.setRunning(false)
+                        container.scheduler.cancelAll()
+                        container.runtime.setRunning(false)
+                        container.runtime.updateStatus {
+                            it.copy(running = false, checking = false, nextCheckAt = null)
+                        }
+                        runCatching { container.notifier.postStatus(container.runtime.status.value) }
+                        stopSelfSafely()
+                        return@launch
+                    }
+
                     if (action == ACTION_WATCHDOG) {
                         if (!container.settings.configOnce().advanced.watchdogEnabled) {
                             container.logger.info("service: watchdog disabled")
                             return@launch
                         }
-                        val last = container.engineState.long(StateKeys.LAST_TICK)
-                        if (System.currentTimeMillis() - last > STALE_MS) {
-                            container.logger.warn("service: watchdog found stale engine; checking")
+                        val now = System.currentTimeMillis()
+                        val next = container.runtime.status.value.nextCheckAt ?: 0L
+                        val missed = next > 0L && now >= next + OVERDUE_GRACE_MS
+                        val lastAttempt = container.engineState.long(StateKeys.LAST_ATTEMPT)
+                        val neverRan = lastAttempt == 0L && container.runtime.status.value.lastCheckAt == null
+                        if (missed || neverRan) {
+                            container.logger.warn("service: watchdog found a missed check; checking")
                             runCheck(force = false, source = "watchdog")
                         } else {
                             container.logger.info("service: watchdog healthy")
@@ -111,6 +132,7 @@ class WatcherService : Service() {
             return
         }
         container.logger.info("service: check starting source=$source force=$force")
+        container.engineState.putLong(StateKeys.LAST_ATTEMPT, System.currentTimeMillis())
         container.runtime.setChecking(true)
         val wake = runCatching {
             getSystemService(PowerManager::class.java)
@@ -211,8 +233,31 @@ class WatcherService : Service() {
                 runCatching {
                     container.notifier.postStatus(container.runtime.status.value)
                 }
+                healMissedCheck(now)
                 delay(HEARTBEAT_MS)
             }
+        }
+    }
+
+    /**
+     * Android can defer inexact alarms for many minutes. If the countdown has
+     * already passed, run the check here instead of waiting for the delivery.
+     */
+    private suspend fun healMissedCheck(now: Long) {
+        val status = container.runtime.status.value
+        if (!status.running) return
+        val next = status.nextCheckAt ?: return
+        if (next <= 0L) return
+        if (now >= next + OVERDUE_GRACE_MS) {
+            if (checking.get()) return
+            container.logger.warn("service: heartbeat found a late check; running it")
+            runCheck(force = false, source = "heartbeat")
+            return
+        }
+        val armed = container.runtime.nextAlarmAt.value
+        if (armed == 0L || armed < now - 5_000L) {
+            container.logger.warn("service: alarm missing; re-arming")
+            container.scheduler.scheduleNext(if (next > now) next else now + 1_000L)
         }
     }
 
@@ -293,7 +338,7 @@ class WatcherService : Service() {
 
         private const val NOTIFICATION_ID = 1000
         private const val HEARTBEAT_MS = 60_000L
-        private const val STALE_MS = 5 * 60_000L
+        private const val OVERDUE_GRACE_MS = 20_000L
         private const val CHECK_WAKE_MS = 120_000L
         private const val CHECK_TIMEOUT_MS = 90_000L
 

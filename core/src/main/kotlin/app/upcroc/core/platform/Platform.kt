@@ -5,6 +5,7 @@ import app.upcroc.core.model.ClientStats
 import app.upcroc.core.model.Job
 import app.upcroc.core.model.OutboxItem
 import app.upcroc.core.model.SearchGroup
+import kotlinx.serialization.Serializable
 
 interface Clock {
     fun now(): Long
@@ -14,6 +15,7 @@ object SystemClock : Clock {
     override fun now(): Long = System.currentTimeMillis()
 }
 
+@Serializable
 enum class LogLevel { DEBUG, INFO, WARN, ERROR }
 
 interface Logger {

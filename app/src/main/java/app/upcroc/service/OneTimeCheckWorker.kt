@@ -27,6 +27,10 @@ class OneTimeCheckWorker(
     override suspend fun doWork(): Result {
         val container = (applicationContext as UpcrocApp).container
         if (!container.settings.runningFlow.first()) return Result.success()
+        if (!container.auth.hasToken()) {
+            container.logger.info("worker: one-time check skipped; no account")
+            return Result.success()
+        }
         container.logger.info("worker: one-time check starting")
         container.runtime.setChecking(true)
         return runCatching {

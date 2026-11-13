@@ -132,6 +132,9 @@ class AndroidNotifier(
         if (status.running && (lastAgeSec ?: 0L) > 10 * 60L) {
             parts += "Android may be delaying checks"
         }
+        if (status.running && next != null && next > 0L && now >= next) {
+            parts += "Check was due; running shortly"
+        }
         if (status.failures > 0) parts += "${status.failures} failure(s)"
         if (parts.isEmpty()) {
             parts += if (status.running) "Waiting for the next check" else "No checks running"

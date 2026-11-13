@@ -28,9 +28,13 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import app.upcroc.ui.icons.IconGlyph
 import app.upcroc.ui.icons.UiIcon
+import app.upcroc.ui.theme.LocalFontFamily
+import app.upcroc.ui.theme.LocalMainWeight
 import app.upcroc.ui.theme.UpType
 import app.upcroc.ui.theme.Upcroc
 import java.util.Locale
@@ -45,6 +49,7 @@ fun UpField(
     singleLine: Boolean = true,
     minLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isPassword: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
 ) {
     Column(
@@ -60,11 +65,16 @@ fun UpField(
                 value = value,
                 onValueChange = onValueChange,
                 modifier = Modifier.weight(1f),
-                textStyle = UpType.bodyStrong.copy(color = Upcroc.Text),
+                textStyle = UpType.bodyStrong.copy(
+                    color = Upcroc.Text,
+                    fontFamily = LocalFontFamily.current,
+                    fontWeight = LocalMainWeight.current,
+                ),
                 cursorBrush = SolidColor(Upcroc.Blue),
                 singleLine = singleLine,
                 minLines = minLines,
                 keyboardOptions = keyboardOptions,
+                visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
                 decorationBox = { inner ->
                     Box {
                         if (value.isBlank() && placeholder.isNotBlank()) {
@@ -104,7 +114,11 @@ fun SearchField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.weight(1f),
-            textStyle = UpType.body.copy(color = Upcroc.Text),
+            textStyle = UpType.body.copy(
+                color = Upcroc.Text,
+                fontFamily = LocalFontFamily.current,
+                fontWeight = LocalMainWeight.current,
+            ),
             cursorBrush = SolidColor(Upcroc.Blue),
             singleLine = true,
             decorationBox = { inner ->

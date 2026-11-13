@@ -332,7 +332,7 @@ fun SearchScreen(
                             modifier = Modifier.weight(1f),
                         )
                         StatBox(
-                            value = latency?.let { Fmt.countdown(it.p50Sec * 1000L) } ?: "—",
+                            value = latency?.let { Fmt.countdown(it.p50Sec * 1000L) } ?: "-",
                             label = "p50 latency",
                             modifier = Modifier.weight(1f),
                         )
@@ -631,12 +631,12 @@ private fun FilterBox(
         Column(Modifier.weight(1f)) {
             AppText(
                 label,
-                style = UpType.tiny.copy(fontSize = 11.sp, fontWeight = FontWeight.W600),
+                style = UpType.tiny.copy(fontWeight = FontWeight.W600),
                 color = Upcroc.Muted,
             )
             AppText(
                 value,
-                style = UpType.body.copy(fontWeight = FontWeight.W600),
+                style = UpType.bodyStrong,
                 color = Upcroc.Text,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

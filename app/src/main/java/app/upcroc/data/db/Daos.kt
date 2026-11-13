@@ -33,6 +33,9 @@ interface JobDao {
     @Query("SELECT COUNT(*) FROM jobs")
     suspend fun count(): Int
 
+    @Query("SELECT * FROM jobs ORDER BY publishedAt DESC")
+    suspend fun all(): List<JobEntity>
+
     @Query("SELECT MAX(publishedAt) FROM jobs")
     suspend fun latestPublishedAt(): Long?
 

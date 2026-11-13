@@ -532,7 +532,7 @@ private fun buildEvents(
             kind = EventKind.Alert,
             title = "1 match · notified",
             sub = job.title.ifBlank { "Job alert" },
-            dur = lag?.let { "${it}s" } ?: "—",
+            dur = lag?.let { "${it}s" } ?: "-",
             details = listOf(
                 "job" to job.id.take(14),
                 "budget" to job.budget.ifBlank { "not listed" },
@@ -560,7 +560,7 @@ private fun buildEvents(
             dur = when (line.level) {
                 LogLevel.WARN -> "warn"
                 LogLevel.ERROR -> "error"
-                else -> "—"
+                else -> "-"
             },
             details = listOf(
                 "level" to line.level.name,

@@ -20,9 +20,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -36,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -58,6 +62,7 @@ import app.upcroc.ui.components.InfoDialog
 import app.upcroc.ui.components.ModalSheet
 import app.upcroc.ui.components.PrimaryButton
 import app.upcroc.ui.components.Segmented
+import app.upcroc.ui.components.pressable
 import app.upcroc.ui.components.SettingRow
 import app.upcroc.ui.components.StatusChip
 import app.upcroc.ui.components.StatusTone
@@ -106,6 +111,11 @@ fun SettingsScreen(
     var alertAgeText by remember { mutableStateOf("") }
     var backgroundOpen by remember { mutableStateOf(false) }
     var textSizeOpen by remember { mutableStateOf(false) }
+    var backupOpen by remember { mutableStateOf(false) }
+    var restoreOpen by remember { mutableStateOf(false) }
+    var fontOpen by remember { mutableStateOf(false) }
+    var mainWeightText by remember { mutableStateOf(uiState.mainWeight.toString()) }
+    var subWeightText by remember { mutableStateOf(uiState.subWeight.toString()) }
 
     val notificationLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -295,10 +305,28 @@ fun SettingsScreen(
 
             SettingsGroup("System") {
                 SettingRow(
+                    title = "Font",
+                    subtitle = "Applies to every screen",
+                    value = fontLabels[fontIndex(uiState.fontChoice)],
+                    onClick = { fontOpen = true },
+                )
+                SettingRow(
                     title = "Text size",
                     subtitle = "Applies across the whole app",
                     value = textScaleLabels[textScaleIndex(uiState.fontScale)],
                     onClick = { textSizeOpen = true },
+                )
+                SettingRow(
+                    title = "Backup",
+                    subtitle = "Save a password-protected backup",
+                    value = "Encrypted",
+                    onClick = { backupOpen = true },
+                )
+                SettingRow(
+                    title = "Restore",
+                    subtitle = "Restore from a backup file",
+                    value = "Encrypted",
+                    onClick = { restoreOpen = true },
                 )
                 SettingRow(
                     title = "Diagnostics",
@@ -431,6 +459,94 @@ fun SettingsScreen(
         InfoDialog(title = title, body = body, onDismiss = { aboutDialog = null })
     }
 
+    if (backupOpen) {
+        BackupSheet(vm = vm, onDismiss = { backupOpen = false }, restore = false)
+    }
+
+    if (restoreOpen) {
+        BackupSheet(vm = vm, onDismiss = { restoreOpen = false }, restore = true)
+    }
+
+    if (fontOpen) {
+        ModalSheet(visible = true, onDismiss = { fontOpen = false }) {
+            AppText("Font", style = UpType.section, color = Upcroc.Text)
+            Spacer(Modifier.height(4.dp))
+            AppText(
+                "Applies to every screen, including sheets and dialogs.",
+                style = UpType.muted,
+                color = Upcroc.Muted,
+            )
+            Spacer(Modifier.height(14.dp))
+            Segmented(
+                options = fontLabels,
+                selected = fontIndex(uiState.fontChoice),
+                onSelect = { index ->
+                    vm.updateUiState { it.copy(fontChoice = fontIds[index]) }
+                },
+            )
+            Spacer(Modifier.height(16.dp))
+            AppText(
+                "Weights",
+                style = UpType.tiny.copy(fontWeight = FontWeight.W700),
+                color = Upcroc.Dim,
+            )
+            Spacer(Modifier.height(4.dp))
+            AppText(
+                "Type any weight from 100 to 900 for main and sub text.",
+                style = UpType.small,
+                color = Upcroc.Muted,
+            )
+            Spacer(Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                UpField(
+                    label = "Main weight",
+                    value = mainWeightText,
+                    onValueChange = { raw ->
+                        val text = raw.filter { it.isDigit() }.take(3)
+                        mainWeightText = text
+                        text.toIntOrNull()?.let { if (it in 100..900) vm.updateUiState { s -> s.copy(mainWeight = it) } }
+                    },
+                    modifier = Modifier.weight(1f),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+                UpField(
+                    label = "Sub weight",
+                    value = subWeightText,
+                    onValueChange = { raw ->
+                        val text = raw.filter { it.isDigit() }.take(3)
+                        subWeightText = text
+                        text.toIntOrNull()?.let { if (it in 100..900) vm.updateUiState { s -> s.copy(subWeight = it) } }
+                    },
+                    modifier = Modifier.weight(1f),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                )
+            }
+            Spacer(Modifier.height(16.dp))
+            AppText(
+                "Preview",
+                style = UpType.tiny.copy(fontWeight = FontWeight.W700),
+                color = Upcroc.Dim,
+            )
+            Spacer(Modifier.height(4.dp))
+            AppText(
+                "Senior AI Automation Engineer",
+                style = UpType.groupTitle,
+                color = Upcroc.Text,
+            )
+            AppText(
+                "Upwork job alerts, readable at a glance.",
+                style = UpType.body,
+                color = Upcroc.Muted,
+            )
+            Spacer(Modifier.height(16.dp))
+            PrimaryButton(
+                "Done",
+                onClick = { fontOpen = false },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+
     if (alertAgeOpen) {
         AppDialog(
             onDismissRequest = { alertAgeOpen = false },
@@ -477,18 +593,36 @@ fun SettingsScreen(
         AppText("Text size", style = UpType.section, color = Upcroc.Text)
         Spacer(Modifier.height(4.dp))
         AppText(
-            "Changes every screen. Default matches the designed size.",
+            "Changes every screen. Default is the size you were already using.",
             style = UpType.muted,
             color = Upcroc.Muted,
         )
         Spacer(Modifier.height(14.dp))
-        Segmented(
-            options = textScaleLabels,
-            selected = textScaleIndex(uiState.fontScale),
-            onSelect = { index ->
-                vm.updateUiState { it.copy(fontScale = textScales[index]) }
-            },
-        )
+        val sizeIndex = textScaleIndex(uiState.fontScale)
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            SizeStepButton("−", "Smaller text") {
+                if (sizeIndex > 0) {
+                    vm.updateUiState { it.copy(fontScale = textScales[sizeIndex - 1]) }
+                }
+            }
+            Column(
+                Modifier.padding(horizontal = 22.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                AppText(textScaleLabels[sizeIndex], style = UpType.groupTitle, color = Upcroc.Text)
+                Spacer(Modifier.height(2.dp))
+                AppText("Text size", style = UpType.tiny, color = Upcroc.Dim)
+            }
+            SizeStepButton("+", "Larger text") {
+                if (sizeIndex < textScales.lastIndex) {
+                    vm.updateUiState { it.copy(fontScale = textScales[sizeIndex + 1]) }
+                }
+            }
+        }
         Spacer(Modifier.height(16.dp))
         AppText(
             "Preview",
@@ -609,12 +743,34 @@ private fun SettingsGroup(label: String, content: @Composable () -> Unit) {
     }
 }
 
-private val textScales = listOf(0.9f, 1f, 1.1f, 1.2f, 1.3f)
-private val textScaleLabels = listOf("Small", "Default", "Large", "XL", "XXL")
+private val textScales = listOf(0.8f, 0.9f, 1.0f, 1.1f, 1.2f, 1.3f)
+private val textScaleLabels = listOf("Small", "Medium", "Default", "Large", "XL", "XXL")
+private val fontIds = listOf("google_sans", "roboto", "manrope", "system")
+private val fontLabels = listOf("Google Sans", "Roboto", "Manrope", "System")
 
 private fun textScaleIndex(value: Float): Int {
     val found = textScales.indexOfFirst { kotlin.math.abs(it - value) < 0.01f }
-    return if (found >= 0) found else 1
+    return if (found >= 0) found else 2
+}
+
+private fun fontIndex(value: String): Int {
+    val found = fontIds.indexOf(value)
+    return if (found >= 0) found else 0
+}
+
+@Composable
+private fun SizeStepButton(label: String, description: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(38.dp)
+            .clip(CircleShape)
+            .background(Upcroc.SurfaceHighest)
+            .semantics { contentDescription = description }
+            .pressable(onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        AppText(label, style = UpType.bodyStrong, color = Upcroc.Text)
+    }
 }
 
 private fun soundName(context: Context, uri: String?): String {

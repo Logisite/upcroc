@@ -30,14 +30,15 @@ class BootReceiver : BroadcastReceiver() {
                     Intent.ACTION_MY_PACKAGE_REPLACED -> wasRunning || config.advanced.alwaysOn
                     else -> config.advanced.alwaysOn || (config.advanced.resumeOnBoot && wasRunning)
                 }
-                if (shouldStart) {
+                if (shouldStart && container.auth.hasToken()) {
                     container.settings.setRunning(true)
                     ContextCompat.startForegroundService(
                         context,
                         Intent(context, WatcherService::class.java).setAction(WatcherService.ACTION_START),
                     )
-                } else if (action == Intent.ACTION_BOOT_COMPLETED) {
+                } else if (action == Intent.ACTION_BOOT_COMPLETED || !container.auth.hasToken()) {
                     // Default is manual start: a reboot leaves the watcher off until Start is pressed.
+                    // Without a stored session there is nothing to check anyway.
                     container.settings.setRunning(false)
                 }
             } finally {

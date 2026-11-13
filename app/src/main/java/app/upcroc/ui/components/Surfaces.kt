@@ -85,12 +85,12 @@ fun Banner(
     ) {
         IconGlyph(icon, Modifier.size(18.dp).padding(top = 1.dp), fg)
         Column(Modifier.weight(1f)) {
-            AppText(title, style = UpType.caption.copy(fontWeight = FontWeight.W800), color = fg)
-            Spacer(Modifier.height(2.dp))
-            AppText(body, style = UpType.small, color = sub)
+            AppText(title, style = UpType.groupTitle, color = fg)
+            Spacer(Modifier.height(3.dp))
+            AppText(body, style = UpType.muted, color = sub)
         }
         if (action != null && onAction != null) {
-            TextLink(action, onAction, color = fg, style = UpType.caption)
+            TextLink(action, onAction, color = fg, style = UpType.link)
         }
     }
 }

@@ -12,6 +12,7 @@ import app.upcroc.core.auth.OAuthClient
 import app.upcroc.core.auth.OAuthClientConfig
 import app.upcroc.core.auth.OAuthNetworkException
 import app.upcroc.core.auth.Pkce
+import app.upcroc.core.auth.TokenSet
 import app.upcroc.core.auth.PkceFactory
 import app.upcroc.core.auth.TokenStore
 import app.upcroc.core.engine.PollingEngine
@@ -234,6 +235,14 @@ class AuthRepository(
             _state.value = AuthState(signedIn = false)
             logger.info("auth: signed out")
         }
+    }
+
+    suspend fun exportTokenSet(): TokenSet? = tokenStore.load()
+
+    suspend fun importTokenSet(tokens: TokenSet) {
+        tokenStore.save(tokens)
+        _state.value = AuthState(signedIn = true)
+        logger.info("auth: token restored from backup")
     }
 
     override suspend fun accessToken(forceRefresh: Boolean): String {

@@ -32,8 +32,12 @@ class WatcherScheduler(
     }
 
     fun cancelAll() {
-        listOf(REQ_CHECK, REQ_WATCHDOG, REQ_RESTART).forEach { req ->
-            alarmManager.cancel(pendingIntent(req))
+        listOf(
+            REQ_CHECK to WatcherService.ACTION_CHECK,
+            REQ_WATCHDOG to WatcherService.ACTION_WATCHDOG,
+            REQ_RESTART to WatcherService.ACTION_START,
+        ).forEach { (req, action) ->
+            alarmManager.cancel(pendingIntent(req, action))
         }
         runtime.setNextAlarm(0L)
     }
@@ -54,9 +58,9 @@ class WatcherScheduler(
         }.onFailure { logger.error("failed to schedule alarm", it) }
     }
 
-    private fun pendingIntent(requestCode: Int, action: String? = null): PendingIntent {
+    private fun pendingIntent(requestCode: Int, action: String): PendingIntent {
         val intent = Intent(context, AlarmReceiver::class.java).apply {
-            if (action != null) this.action = action
+            this.action = action
         }
         return PendingIntent.getBroadcast(
             context,

@@ -2,6 +2,7 @@ package app.upcroc.di
 
 import android.app.Application
 import app.upcroc.auth.AuthRepository
+import app.upcroc.backup.BackupManager
 import app.upcroc.core.config.WatcherConfig
 import app.upcroc.core.engine.EngineState
 import app.upcroc.core.engine.PollingEngine
@@ -29,7 +30,7 @@ import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
-class AppContainer(private val app: Application) {
+class AppContainer(val app: Application) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val settings = SettingsRepository(app)
@@ -56,6 +57,7 @@ class AppContainer(private val app: Application) {
 
     val notifier = AndroidNotifier(app, { config }, logger)
     val scheduler = WatcherScheduler(app, runtime, logger)
+    val backupManager = BackupManager(this)
     val updateManager = UpdateManager(app, http, settings, logger)
 
     private val tokenBridge = object : TokenProvider {

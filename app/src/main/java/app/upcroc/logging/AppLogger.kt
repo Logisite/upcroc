@@ -6,11 +6,13 @@ import app.upcroc.core.platform.LogLevel
 import app.upcroc.core.platform.Logger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.serialization.Serializable
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@Serializable
 data class LogLine(
     val at: Long,
     val level: LogLevel,
@@ -75,6 +77,17 @@ class AppLogger(context: Context) : Logger {
         runCatching {
             file.delete()
             rotated.delete()
+        }
+    }
+
+    /** Restores saved events from a backup without duplicating what is already here. */
+    @Synchronized
+    fun importLines(lines: List<LogLine>) {
+        if (lines.isEmpty()) return
+        val merged = (_lines.value + lines).distinctBy { it.at to it.text }.sortedBy { it.at }
+        _lines.value = purgeExpired(merged).takeLast(MAX_LINES)
+        runCatching {
+            file.appendText(lines.joinToString("\n", transform = ::format) + "\n")
         }
     }
 
